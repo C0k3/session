@@ -9,6 +9,8 @@ const CLIENT_ID_HEADER = 'X-koms-clientid'; //TODO: refactor this into config or
 module.exports = function(event, context, cb) {
     let clientId = event.headers[CLIENT_ID_HEADER];
     let token = '';
+
+    //DRY: refactor into common library (shared with getSession.js)
     if (event.authorizationToken) {
         let parts = event.authorizationToken.split(' ');
         if (parts.length == 2) {

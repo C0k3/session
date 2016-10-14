@@ -1,0 +1,12 @@
+{
+  "RefreshTokenTable": "test-RefreshTokens",
+  "UsersTable": "test-Users",
+  "RefreshTokenExpiration": "30 days",
+  "AccessTokenExpiration": "1h",
+  "DynamoDB": {
+    "access_key": "test",
+    "secret_key": "test",
+    "region": "us-east-1",
+    "endpoint": "https://dynamodb.us-east-1.amazonaws.com"
+  },        
+}

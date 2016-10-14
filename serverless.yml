@@ -56,7 +56,19 @@ functions:
       - http:
           path: ping
           method: get
-    authorizer:
+  getToken:
+    handler: handler.getToken
+    events:
+        - http: 
+            path: session
+            method: GET
+            integration: lambda
+            cors: true
+            authorizer: 
+              name: authorizer
+              resultTtlInSeconds: 3
+              identitySource: method.request.header.Authorization
+  authorizer:
     handler: handler.authorizer
 
 
