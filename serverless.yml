@@ -56,6 +56,9 @@ functions:
       - http:
           path: ping
           method: get
+    authorizer:
+    handler: handler.authorizer
+
 
 #    you can add any of the following events
 #    events:
