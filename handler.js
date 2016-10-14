@@ -1,21 +1,18 @@
 'use strict';
 
 // Your first function handler
-module.exports.hello = (event, context, cb) => {
-    const body = {
-    message: 'Go Serverless v1.0! Your function executed successfully!',
-    input: event,
-  };
+module.exports.ping = (event, context, cb) => {
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      'custom-header': 'Custom header value',
-    },
-    body: JSON.stringify(body),
-  };
+    setEnvVars(event.requestContext);
+    let response = {
+        statusCode: 200,
+        body: `all good in ${process.env.NODE_ENV}`
+    };
 
-  cb(null, response);
+    context.succeed(response);
 };
 
-// You can add more handlers here, and reference them in serverless.yml
+function setEnvVars(requestContext) {
+    process.env.NODE_ENV = requestContext.stage;
+    //set any additional env vars here
+}

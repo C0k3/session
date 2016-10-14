@@ -16,6 +16,7 @@ service: my-idp # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs4.3
+  profile: ko-playground-admin
 
 # you can overwrite defaults here
 #  stage: dev
@@ -45,8 +46,12 @@ provider:
 #  artifact: my-service-code.zip
 
 functions:
-  hello:
-    handler: handler.hello
+  ping:
+    handler: handler.ping
+    events:
+      - http:
+          path: ping
+          method: get
 
 #    you can add any of the following events
 #    events:
