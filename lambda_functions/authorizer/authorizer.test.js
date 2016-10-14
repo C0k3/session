@@ -38,7 +38,8 @@ describe('authorizer', function() {
         //run and verify
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
-                assert.equal(err, 'no authorization header found');
+                //TODO: test err
+                assert.equal(data, 'no authorization header found');
             });
         });
     });
@@ -50,7 +51,7 @@ describe('authorizer', function() {
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'credentials_bad_format');
-                assert.equal(data.message, 'Format is Authorization: Bearer [token]');
+                assert.equal(data, 'Format is Authorization: Bearer [token]');
             });
         });        
     });
@@ -62,7 +63,7 @@ describe('authorizer', function() {
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'credentials_bad_scheme');
-                assert.equal(data.message, 'Format is Authorization: Bearer [token]');
+                assert.equal(data, 'Format is Authorization: Bearer [token]');
             });
         });        
     });
