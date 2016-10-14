@@ -1,0 +1,36 @@
+{
+  "name": "idp_example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/C0k3/session.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.4.14",
+    "chai": "^3.5.0",
+    "git-guppy": "^1.2.1",
+    "gulp": "^3.9.1",
+    "gulp-env": "^0.4.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-mocha": "^3.0.0",
+    "guppy-pre-commit": "^0.3.0",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0",
+    "proxyquire": "^1.7.10",
+    "run-sequence": "^1.2.2",
+    "sinon": "^1.17.5",
+    "yamljs": "^0.2.8"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.1",
+    "jsonwebtoken": "^7.1.9",
+    "node-forge": "^0.6.43"
+  }
+}

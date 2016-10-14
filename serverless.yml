@@ -45,6 +45,10 @@ provider:
 #    - exclude-me.js
 #  artifact: my-service-code.zip
 
+package:
+  exclude:
+    - gulpfile.js
+
 functions:
   ping:
     handler: handler.ping
