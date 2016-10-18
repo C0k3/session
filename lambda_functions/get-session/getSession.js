@@ -37,4 +37,3 @@ module.exports = function(event, context, cb) {
                     }));
         });    
 };
-        
