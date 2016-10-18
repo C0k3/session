@@ -32,7 +32,7 @@ module.exports = function(event, context, cb) {
             let awsAccountId = tmp[4];
             apiOptions.region = tmp[3];
             apiOptions.restApiId = apiGatewayArnTmp[0];
-            apiOptions.stage = apiGatewayArnTmp[1]; 
+            apiOptions.stage = apiGatewayArnTmp[1];
 
             // this function must generate a policy that is associated with the recognized principal user identifier.
             // depending on your use case, you might store policies in a DB, or generate them on the fly
@@ -46,6 +46,6 @@ module.exports = function(event, context, cb) {
             cb(null, policy.build());  
         })
         .catch(err => {
-            return cb (err.error, err.message);
+            return cb ('Fail', err);
         });
 };

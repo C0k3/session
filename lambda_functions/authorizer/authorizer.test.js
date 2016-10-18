@@ -37,9 +37,10 @@ describe('authorizer', function() {
     it('should throw an error if no Authorization header is in the request', function(done) {
         //run and verify
         authorizer(this.event, {}, (err, data) => {
-            testHelper.check(done, () => {
-                //TODO: test err
-                assert.equal(data, 'no authorization header found');
+            testHelper.check(done, () => {                
+                assert.equal(err, 'Fail');
+                assert.equal(data.name, 'no_header');
+                assert.equal(data.message, 'no authorization header found');
             });
         });
     });
@@ -50,8 +51,9 @@ describe('authorizer', function() {
         //run and verify
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
-                assert.equal(err, 'credentials_bad_format');
-                assert.equal(data, 'Format is Authorization: Bearer [token]');
+                assert.equal(err, 'Fail');
+                assert.equal(data.name, 'credentials_bad_format');
+                assert.equal(data.message, 'Format is Authorization: Bearer [token]');
             });
         });        
     });
@@ -62,8 +64,9 @@ describe('authorizer', function() {
         //run and verify
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
-                assert.equal(err, 'credentials_bad_scheme');
-                assert.equal(data, 'Format is Authorization: Bearer [token]');
+                assert.equal(err, 'Fail');
+                assert.equal(data.name, 'credentials_bad_scheme');
+                assert.equal(data.message, 'Format is Authorization: Bearer [token]');
             });
         });        
     });
