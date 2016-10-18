@@ -14,26 +14,29 @@ module.exports = function(event, context, cb) {
             let at_expiresIn = 0;
             try {
                 at_expiresIn = jwt.decode(token).exp - Math.floor(Date.now() / 1000);        
-            } catch (e) {  
-                return cb(e,{ message:'Error in getting accessToken Expiry date' + e });
+            } catch (e) {
+                log.error(e);
+                return cb(null, response(500, {
+                    message:'Error in getting accessToken Expiry date' 
+                }, true));
             } 
 
             if(at_expiresIn < 0) {
-
+                log.info('received expired token');
                 return cb(null, response(401, {
                         requestId : context.awsRequestId,
-                        message : 'Token expired' 
-                    }));
+                        message : 'Token expired'                    
+                    }, true));
 
             } else {    
-                return cb(null, response(200, { access_token_expires_in: at_expiresIn, subject: token.subject }));
+                return cb(null, response(200, { access_token_expires_in: at_expiresIn }, true));
             }        
         })
         .catch(err => {
-
+            log.error(err);
             return cb(null, response(500, {
                         requestId : context.awsRequestId,
                         message : err.message
-                    }));
+                    }, true));
         });    
 };
