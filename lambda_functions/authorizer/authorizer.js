@@ -4,11 +4,11 @@ var AuthPolicy = require('../../lib/AuthPolicy');
 var log = require('../../lib/log');
 var token = require('../../lib/token');
 var secret = require('../../lib/generate-secret');
-const CLIENT_ID_HEADER = 'X-koms-clientid'; //TODO: refactor this into config or "env var
+var constants = require('../../lib/constants');
 
 //Custom Authorizer reference: http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-input
 module.exports = function(event, context, cb) {
-    let clientId = event.headers[CLIENT_ID_HEADER];    
+    let clientId = event.headers[constants.CLIENT_ID_HEADER];    
 
     token.parseAuthorizationHeader(event.authorizationToken)
         .then(parsedToken => {
@@ -35,10 +35,6 @@ module.exports = function(event, context, cb) {
 
             // this function must generate a policy that is associated with the recognized principal user identifier.
             // depending on your use case, you might store policies in a DB, or generate them on the fly
-
-            // keep in mind, the policy is cached for 5 minutes by default (TTL is configurable in the authorizer)
-            // and will apply to subsequent calls to any method/resource in the RestApi
-            // made with the same token
 
             let policy = new AuthPolicy(principalId, awsAccountId, apiOptions);
             policy.allowAllMethods();
