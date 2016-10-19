@@ -4,7 +4,8 @@ var proxyquire = require('proxyquire'),
     sinon = require('sinon'),
     assert = chai.assert,
     expect = chai.expect,
-    testHelper = require('../../util/testHelper');
+    testHelper = require('../../util/testHelper'),
+    constants = require('../../lib/constants');
 
 var authorizer = require('./authorizer');
 
@@ -143,7 +144,19 @@ describe('authorizer', function() {
         });   
     });
 
-    it('should throw an error if client id is missing in the header', function() {
-        
+    it('should throw an error if client id is missing in the header', function(done) {
+        //setup
+        this.event.headers = {};
+        let proxy = this.makeProxy();
+
+        //run and verify
+        proxy(this.event, {}, (err, data) => {
+            testHelper.check(done, () => {
+                assert.equal(err, 'Fail');
+                assert.equal(data.name, 'missing_client_id');
+                assert.equal(data.message, `${constants.CLIENT_ID_HEADER} key missing in request header`);
+            });
+        });
+
     });
 });

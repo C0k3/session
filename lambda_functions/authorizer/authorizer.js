@@ -8,7 +8,14 @@ var constants = require('../../lib/constants');
 
 //Custom Authorizer reference: http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-input
 module.exports = function(event, context, cb) {
-    let clientId = event.headers[constants.CLIENT_ID_HEADER];    
+    let clientId = event.headers[constants.CLIENT_ID_HEADER];
+
+    if (!clientId) {
+        return cb('Fail', {
+            name: 'missing_client_id',
+            message: `${constants.CLIENT_ID_HEADER} key missing in request header`
+        });
+    }
 
     token.parseAuthorizationHeader(event.authorizationToken)
         .then(parsedToken => {

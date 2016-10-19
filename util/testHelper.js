@@ -11,7 +11,6 @@ module.exports = {
         }
     },
     lambdaEvent: {
-        headers: { 'X-koms-clientid': '12345' },
-        body: { janrainCode: '6789' }
+        headers: { 'X-koms-clientid': '12345' }
     }
 };
