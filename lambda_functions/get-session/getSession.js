@@ -3,13 +3,12 @@ var jwt = require('jsonwebtoken'); //https://www.npmjs.com/package/jsonwebtoken
 var log = require('../../lib/log');
 var token = require('../../lib/token');
 var response = require('../../lib/response');
-var config = require(`../../config/${process.env.NODE_ENV}.json`); 
-const AUTHORIZATION_HEADER = 'Authorization';
+var config = require(`../../config/${process.env.NODE_ENV}.json`);
+var constants = require('../../lib/constants');
 
 module.exports = function(event, context, cb) {    
-    let authorizationToken = event.headers[AUTHORIZATION_HEADER];
     
-    token.parseAuthorizationHeader(event.headers[AUTHORIZATION_HEADER])
+    token.parseAuthorizationHeader(event.headers[constants.AUTHORIZATION_HEADER])
         .then(token => {
             let at_expiresIn = 0;
             try {
@@ -33,7 +32,7 @@ module.exports = function(event, context, cb) {
             }        
         })
         .catch(err => {
-            log.error(err);
+
             return cb(null, response(500, {
                         requestId : context.awsRequestId,
                         message : err.message

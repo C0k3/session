@@ -48,6 +48,7 @@ provider:
 package:
   exclude:
     - gulpfile.js
+    - lambda_functions/**/*.test.js
 
 functions:
   ping:
