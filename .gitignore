@@ -4,3 +4,5 @@ node_modules
 *.log
 *.zip
 dist
+.tmp
+test-result.xml
