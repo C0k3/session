@@ -1,0 +1,38 @@
+pipelines:
+  authorizer: # definition of mypipe1 pipeline
+    group: lambda # note that the group name can contain only of alphanumeric & underscore characters
+    label_template: "${authorizer[:8]}"
+    materials:
+      authorizer: # this is the name of material, the name can contain only of alphanumeric & underscore characters
+        # keyword git says about type of material and url at once
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/authorizer/**/*.*
+    stages:
+      - unit-testing:
+          clean_workspace: true
+          jobs:
+            run: # name of the job
+              # artifacts:
+              # - build:
+              #     source: bin/
+              #     destination: build
+              # - test:
+              #     source: tests/
+              #     destination: test-reports/
+              # tabs:
+              #   report: test-reports/index.html
+              tasks: # ordered list of tasks to execute in job csharp
+              # - fetch:
+              #     pipeline: pipe2
+              #     stage: build
+              #     job: test
+              #     source: test-bin/
+              #     destination: bin/
+              # - exec: # indicates type of task
+              #     command: make
+              #     arguments:
+              #       - "VERBOSE=true"
+               # shorthand for script-executor plugin
+               - script: ./build.sh ci

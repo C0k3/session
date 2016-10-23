@@ -17,6 +17,10 @@ provider:
   name: aws
   runtime: nodejs4.3
   profile: ko-playground-admin
+  
+plugins:
+  - serverless-webpack
+  # - serverless-mocha-plugin
 
 # you can overwrite defaults here
 #  stage: dev
@@ -72,7 +76,9 @@ functions:
   authorizer:
     handler: handler.authorizer
 
-
+custom:
+  webpackIncludeModules: true
+  
 #    you can add any of the following events
 #    events:
 #      - http:

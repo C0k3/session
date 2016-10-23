@@ -1,10 +1,10 @@
 'use strict';
-var jwt = require('jsonwebtoken'); //https://www.npmjs.com/package/jsonwebtoken
-var log = require('../../lib/log');
-var token = require('../../lib/token');
-var response = require('../../lib/response');
-var config = require(`../../config/${process.env.NODE_ENV}.json`);
-var constants = require('../../lib/constants');
+import jwt from 'jsonwebtoken'; //https://www.npmjs.com/package/jsonwebtoken
+import log from 'lib/log';
+import token from 'lib/token';
+import response from 'lib/response';
+// const config from `../../config/${process.env.NODE_ENV}.json`;
+import constants from 'lib/constants';
 
 module.exports = function(event, context, cb) {    
     
