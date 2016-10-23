@@ -5,4 +5,4 @@ node_modules
 *.zip
 dist
 .tmp
-test-result.xml
+test-results.xml

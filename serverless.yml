@@ -20,7 +20,6 @@ provider:
   
 plugins:
   - serverless-webpack
-  # - serverless-mocha-plugin
 
 # you can overwrite defaults here
 #  stage: dev
