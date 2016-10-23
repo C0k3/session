@@ -27,4 +27,4 @@ pipelines:
               - script: |
                   ls -al
                   npm install
-                  node_module/.bin/mocha-webpack
+                  node_modules/.bin/mocha-webpack
