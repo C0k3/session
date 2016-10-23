@@ -13,14 +13,11 @@ pipelines:
       - unit-testing:
           clean_workspace: true
           jobs:
-            run: # name of the job
-              # artifacts:
-              # - build:
-              #     source: bin/
-              #     destination: build
-              # - test:
-              #     source: tests/
-              #     destination: test-reports/
+            run:
+              artifacts:
+              - test:
+                  source: test-results.xml
+                  destination: test-reports/
               # tabs:
               #   report: test-reports/index.html
               tasks: # ordered list of tasks to execute in job csharp
@@ -35,4 +32,4 @@ pipelines:
               #     arguments:
               #       - "VERBOSE=true"
                # shorthand for script-executor plugin
-               - script: ./build.sh ci
+               - script: ./mocha-webpack
