@@ -9,11 +9,14 @@ pipelines:
         branch: development
         whitelist:
         - lambda_functions/authorizer/**/*.*
+        - pipelines.gocd.yaml
     stages:
       - unit-testing:
           clean_workspace: true
           jobs:
             run:
+              environment_variables:
+                NODE_ENV: development
               artifacts:
               - test:
                   source: test-results.xml
@@ -21,15 +24,7 @@ pipelines:
               # tabs:
               #   report: test-reports/index.html
               tasks: # ordered list of tasks to execute in job csharp
-              # - fetch:
-              #     pipeline: pipe2
-              #     stage: build
-              #     job: test
-              #     source: test-bin/
-              #     destination: bin/
-              # - exec: # indicates type of task
-              #     command: make
-              #     arguments:
-              #       - "VERBOSE=true"
-               # shorthand for script-executor plugin
-               - script: mocha-webpack
+              - script: |
+                  ls -al
+                  npm install
+                  node_module/.bin/mocha-webpack
