@@ -32,4 +32,4 @@ pipelines:
               #     arguments:
               #       - "VERBOSE=true"
                # shorthand for script-executor plugin
-               - script: ./mocha-webpack
+               - script: mocha-webpack
