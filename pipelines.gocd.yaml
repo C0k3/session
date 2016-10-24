@@ -41,3 +41,25 @@ pipelines:
               - script: |
                   npm install
                   node_modules/.bin/webpack
+      - code-coverage:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: test
+                COV_LINES: 50
+                COV_FUNCTIONS: 50
+                COV_BRANCHES: 50
+              artifacts:
+              - build:
+                  source: coverage
+              tabs:
+                code-coverage: coverage/lcov-report/index.html
+              tasks:
+              - script: |
+                  npm install
+                  node_modules/.bin/nyc mocha-webpack
+                  true
+              - script: |
+                  node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+                  

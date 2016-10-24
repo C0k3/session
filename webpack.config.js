@@ -27,6 +27,14 @@ module.exports = {
       }
     ]
   },
+  babel: {
+    presets: ["es2015"],
+    env: {
+      test: {
+        plugins: ["istanbul"]
+      }
+    }
+  },
   eslint: {
     outputReport: {
       filePath: 'checkstyle.xml',
