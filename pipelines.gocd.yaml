@@ -21,9 +21,23 @@ pipelines:
               - test:
                   source: test-results.xml
                   destination: test-reports/
-              # tabs:
-              #   report: test-reports/index.html
-              tasks: # ordered list of tasks to execute in job csharp
+              tasks:
               - script: |
                   npm install
                   node_modules/.bin/mocha-webpack
+      - lint:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: development
+              artifacts:
+              - test:
+                  source: .webpack/checkstyle.xml
+                  destination: test-reports/
+              tabs:
+                lint: test-reports/checkstyle.xml
+              tasks:
+              - script: |
+                  npm install
+                  node_modules/.bin/webpack

@@ -27,6 +27,12 @@ module.exports = {
       }
     ]
   },
+  eslint: {
+    outputReport: {
+      filePath: 'checkstyle.xml',
+      formatter: require('eslint/lib/formatters/checkstyle')
+    }
+  },
   output: {
     libraryTarget: 'commonjs',
     path: path.join(__dirname, '.webpack'),
