@@ -25,6 +25,5 @@ pipelines:
               #   report: test-reports/index.html
               tasks: # ordered list of tasks to execute in job csharp
               - script: |
-                  ls -al
                   npm install
                   node_modules/.bin/mocha-webpack

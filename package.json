@@ -15,6 +15,7 @@
   "devDependencies": {
     "aws-sdk": "^2.4.14",
     "babel-core": "^6.17.0",
+    "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-polyfill": "6.16.0",
@@ -22,6 +23,9 @@
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.16.3",
     "chai": "^3.5.0",
+    "eslint": "^3.8.1",
+    "eslint-loader": "^1.6.0",
+    "eslint-plugin-babel": "^3.3.0",
     "git-guppy": "^1.2.1",
     "gulp": "^3.9.1",
     "gulp-env": "^0.4.0",
