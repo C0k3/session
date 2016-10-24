@@ -62,4 +62,13 @@ pipelines:
                   true
               - script: |
                   node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
-                  
+      - dist:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: production
+              tasks:
+              - script: |
+                  sls webpack --out dist
+
