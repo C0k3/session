@@ -21,10 +21,54 @@ pipelines:
               - test:
                   source: test-results.xml
                   destination: test-reports/
-              # tabs:
-              #   report: test-reports/index.html
-              tasks: # ordered list of tasks to execute in job csharp
+              tasks:
               - script: |
-                  ls -al
                   npm install
-                  node_module/.bin/mocha-webpack
+                  node_modules/.bin/mocha-webpack
+      - lint:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: development
+              artifacts:
+              - test:
+                  source: .webpack/checkstyle.xml
+                  destination: test-reports/
+              tabs:
+                lint: test-reports/checkstyle.xml
+              tasks:
+              - script: |
+                  npm install
+                  node_modules/.bin/webpack
+      - code-coverage:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: test
+                COV_LINES: 50
+                COV_FUNCTIONS: 50
+                COV_BRANCHES: 50
+              artifacts:
+              - build:
+                  source: coverage
+              tabs:
+                code-coverage: coverage/lcov-report/index.html
+              tasks:
+              - script: |
+                  npm install
+                  node_modules/.bin/nyc mocha-webpack
+                  true
+              - script: |
+                  node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+      - dist:
+          clean_workspace: true
+          jobs:
+            run:
+              environment_variables:
+                NODE_ENV: production
+              tasks:
+              - script: |
+                  sls webpack --out dist
+

@@ -9,15 +9,37 @@ module.exports = {
   },
   target: 'node',
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      include: __dirname,
-      exclude: /node_modules/,
-      query: {
-        presets: ['es2015', 'stage-0']
+    loaders: [
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: __dirname,
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015', 'stage-0']
+        }
       }
-    }]
+    ]
+  },
+  babel: {
+    presets: ["es2015"],
+    env: {
+      test: {
+        plugins: ["istanbul"]
+      }
+    }
+  },
+  eslint: {
+    outputReport: {
+      filePath: 'checkstyle.xml',
+      formatter: require('eslint/lib/formatters/checkstyle')
+    }
   },
   output: {
     libraryTarget: 'commonjs',
