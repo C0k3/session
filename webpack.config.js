@@ -37,8 +37,8 @@ module.exports = {
   },
   eslint: {
     outputReport: {
-      filePath: 'checkstyle.xml',
-      formatter: require('eslint/lib/formatters/checkstyle')
+      filePath: 'eslint.html',
+      formatter: require('eslint/lib/formatters/html')
     }
   },
   output: {
