@@ -11,12 +11,6 @@ module.exports = {
   module: {
     loaders: [
       {
-        enforce: "pre",
-        test: /\.js$/,
-        loader: "eslint-loader",
-        exclude: /node_modules/
-      },
-      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: __dirname,
@@ -33,12 +27,6 @@ module.exports = {
       test: {
         plugins: ["istanbul"]
       }
-    }
-  },
-  eslint: {
-    outputReport: {
-      filePath: 'eslint.html',
-      formatter: require('eslint/lib/formatters/html')
     }
   },
   output: {
