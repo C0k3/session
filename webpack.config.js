@@ -4,8 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-    authorizer: './lambda_functions/authorizer/authorizer.js',
-    'get-session': './lambda_functions/get-session/getSession.js'
+    authorizer: './lambda_functions/authorizer/authorizer.js'
   },
   target: 'node',
   module: {
