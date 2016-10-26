@@ -1,35 +1,71 @@
 pipelines:
-  authorizer: # definition of mypipe1 pipeline
-    group: lambda # note that the group name can contain only of alphanumeric & underscore characters
+  authorizer:
+    group: lambda
     label_template: "${authorizer[:8]}"
     materials:
-      authorizer: # this is the name of material, the name can contain only of alphanumeric & underscore characters
-        # keyword git says about type of material and url at once
+      authorizer:
         git: https://github.com/C0k3/session
         branch: development
         whitelist:
         - lambda_functions/authorizer/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
     stages:
       - unit-testing:
           clean_workspace: true
-          jobs:
-            run:
-              artifacts:
-              - test:
-                  source: test-results.xml
-                  destination: test-reports/
-              # tabs:
-              #   report: test-reports/index.html
-              tasks: # ordered list of tasks to execute in job csharp
-              # - fetch:
-              #     pipeline: pipe2
-              #     stage: build
-              #     job: test
-              #     source: test-bin/
-              #     destination: bin/
-              # - exec: # indicates type of task
-              #     command: make
-              #     arguments:
-              #       - "VERBOSE=true"
-               # shorthand for script-executor plugin
-               - script: ./mocha-webpack
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - test:
+              source: test-results.xml
+              destination: test-reports/
+          tasks:
+          - script: |
+              npm install
+              node_modules/.bin/mocha-webpack
+      - lint:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - build:
+              source: .webpack/eslint.html
+              destination: test-reports/
+          tabs:
+            lint: test-reports/eslint.html
+          tasks:
+          - script: |
+              npm install
+              node_modules/.bin/eslint -c .eslintrc.json -f html -o .webpack/eslint.html lambda_functions/**/*.js lib/**/*.js util/**/*.js
+      - code-coverage:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: test
+            COV_LINES: 1
+            COV_FUNCTIONS: 1
+            COV_BRANCHES: 1
+          artifacts:
+          - build:
+              source: coverage
+          tabs:
+            code-coverage: coverage/index.html
+          tasks:
+          - script: |
+              npm install
+              node_modules/.bin/nyc --reporter html node_modules/.bin/mocha-webpack
+              true
+          - script: |
+              node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+      - dist:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: production
+          artifacts:
+          - build:
+              source: dist
+          tasks:
+          - script: |
+              npm install
+              sls webpack --out dist
