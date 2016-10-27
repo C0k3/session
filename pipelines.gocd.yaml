@@ -32,14 +32,15 @@ pipelines:
             NODE_ENV: development
           artifacts:
           - build:
-              source: .webpack/eslint.html
-              destination: test-reports/
+              source: jshint.html
           tabs:
-            lint: test-reports/eslint.html
+            lint: jshint.html
           tasks:
           - script: |
+              touch jshint.html
               npm install
               node_modules/.bin/gulp lint
+              true
       - code-coverage:
           clean_workspace: true
           environment_variables:

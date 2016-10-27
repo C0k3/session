@@ -26,6 +26,10 @@ gulp.task('lint', function() {
     './test/**/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish_lint_reporter))
+    .pipe(jshint.reporter('gulp-jshint-html-reporter', {
+      filename: __dirname + '/jshint.html',
+      createMissingFolders : false  
+    }))
     .pipe(jshint.reporter('fail'));
 });
 
