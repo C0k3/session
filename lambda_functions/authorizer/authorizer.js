@@ -1,14 +1,13 @@
 'use strict';
-const jwt = require('jsonwebtoken');
-const AuthPolicy = require('../../lib/AuthPolicy');
-const log = require( '../../lib/log' );
-const token = require('../../lib/token');
-const secret = require( '../../lib/generate-secret' );
-const constants = require('../../lib/constants');
+var jwt = require('jsonwebtoken');
+var AuthPolicy = require('../../lib/AuthPolicy');
+var log = require('../../lib/log');
+var token = require('../../lib/token');
+var secret = require('../../lib/generate-secret');
+var constants = require('../../lib/constants');
 
 //Custom Authorizer reference: http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-input
 module.exports = function(event, context, cb) {
-    
     let clientId = event.headers[constants.CLIENT_ID_HEADER];
 
     if (!clientId) {

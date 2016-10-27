@@ -1,0 +1,71 @@
+pipelines:
+  authorizer:
+    group: lambda
+    label_template: "${authorizer[:8]}"
+    materials:
+      authorizer:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/authorizer/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+    stages:
+      - unit-testing:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - test:
+              source: test-results.xml
+              destination: test-reports/
+          tasks:
+          - script: |
+              npm install
+              gulp test
+      - lint:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - build:
+              source: .webpack/eslint.html
+              destination: test-reports/
+          tabs:
+            lint: test-reports/eslint.html
+          tasks:
+          - script: |
+              npm install
+              gulp lint
+      - code-coverage:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: test
+            COV_LINES: 1
+            COV_FUNCTIONS: 1
+            COV_BRANCHES: 1
+          artifacts:
+          - build:
+              source: coverage
+          tabs:
+            code-coverage: coverage/index.html
+          tasks:
+          - script: |
+              npm install
+              nyc --reporter html gulp test
+              true
+          - script: |
+              nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+      - dist:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: production
+          artifacts:
+          - build:
+              source: dist
+          tasks:
+          - script: |
+              npm install
+              sls

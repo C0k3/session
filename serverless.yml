@@ -18,9 +18,6 @@ provider:
   runtime: nodejs4.3
   profile: ko-playground-admin
   
-plugins:
-  - serverless-webpack
-
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1

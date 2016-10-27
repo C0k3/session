@@ -1,4 +1,0 @@
---colors
---webpack-config webpack.config.js
---reporter mocha-junit-reporter
-lambda_functions/**/*.test.js
