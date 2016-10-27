@@ -1,5 +1,5 @@
 pipelines:
-  authorizer:
+  authorizer-webpack:
     group: lambda
     label_template: "${authorizer[:8]}"
     materials:
