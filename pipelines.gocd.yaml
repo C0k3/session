@@ -64,9 +64,6 @@ pipelines:
           clean_workspace: true
           environment_variables:
             NODE_ENV: production
-          artifacts:
-          - build:
-              source: dist
           tasks:
           - script: |
               npm install
