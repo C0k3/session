@@ -7,28 +7,20 @@ var proxyquire = require('proxyquire'),
     testHelper = require('../../util/testHelper'),
     constants = require('../../lib/constants');
 
-var authorizer = require('./authorizer');
+var authorizerProxy = require('proxy!./authorizer');
+var authorizer = authorizerProxy({
+	'../../lib/log' : {
+        error: () => { return; }
+    },
+    '../../lib/generate-secret' : (clientId) => {
+        return 'secret';
+    }
+});
 
 describe('authorizer', function() {
     beforeEach(function() {
         this.sinon = sinon.sandbox.create();
         this.event = testHelper.lambdaEvent;
-        this.makeProxy = (secret) => {
-            let fakes = {
-                '../../lib/log': {
-                    error: () => { return; }
-                }   
-            };
-
-            if (secret) {
-                fakes['../../lib/generate-secret'] = (clientId) => {
-                    return 'secret';
-                };
-            }
-
-            return proxyquire('./authorizer', fakes);
-        };
-        
     });
 
     afterEach(function() {
@@ -36,6 +28,7 @@ describe('authorizer', function() {
     });
 
     it('should throw an error if no Authorization header is in the request', function(done) {
+        
         //run and verify
         authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {                
@@ -75,10 +68,9 @@ describe('authorizer', function() {
     it('should return an "Unauthorized" error if access_token is malformed', function(done) {
         this.event.authorizationToken = 'Bearer 1234';
 
-        let proxy = this.makeProxy();
-
         //run and verify
-        proxy(this.event, {}, (err, data) => {
+        authorizer(this.event, {}, (err, data) => {
+            
             testHelper.check(done, () => {
                 assert.equal(err, 'Unauthorized');
                 assert.equal(data.name, 'JsonWebTokenError');
@@ -91,14 +83,12 @@ describe('authorizer', function() {
         //NOTE: this is a jwt signed with the literal string 'secret' - there is no expiration set
         this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ';
 
-        let proxy = this.makeProxy();
-
         //run and verify
-        proxy(this.event, {}, (err, data) => {
+        authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Unauthorized');
                 assert.equal(data.name, 'JsonWebTokenError');
-                assert.equal(data.message, 'invalid signature');
+                assert.equal(data.message, 'jwt audience invalid. expected: 12345');
             });
         });   
     });
@@ -106,10 +96,8 @@ describe('authorizer', function() {
     it('should return an "Unauthorized" error if access_token was signed with a different client id', function(done) {
         this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NzE0NjUwOTAsImF1ZCI6IjY3ODQ5In0.3rBsPl94pesw70b4u1BugCxTitxFuVM0VZrt7ahDQJg';
 
-        let proxy = this.makeProxy('secret');
-
         //run and verify
-        proxy(this.event, {}, (err, data) => {
+        authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Unauthorized');
                 assert.equal(data.name, 'JsonWebTokenError');
@@ -132,10 +120,8 @@ describe('authorizer', function() {
         this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NzE0NjUwOTAsImV4cCI6MjY1MzM0NDAwLCJhdWQiOiIxMjM0NSJ9.zzCVcGQzkZdn3z5POuXR4tSEVV1O4LxzcxFusg4qN0o';
         this.event.methodArn = 'arn:aws:execute-api:us-east-1:665342856034:rp8p7288o0/*/GET/session';
 
-        let proxy = this.makeProxy('secret');
-
         //run and verify
-        proxy(this.event, {}, (err, data) => {
+        authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Unauthorized');
                 assert.equal(data.name, 'TokenExpiredError');
@@ -147,10 +133,8 @@ describe('authorizer', function() {
     it('should throw an error if client id is missing in the header', function(done) {
         //setup
         this.event.headers = {};
-        let proxy = this.makeProxy();
-
         //run and verify
-        proxy(this.event, {}, (err, data) => {
+        authorizer(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Fail');
                 assert.equal(data.name, 'missing_client_id');
