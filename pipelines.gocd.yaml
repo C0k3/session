@@ -5,7 +5,7 @@ pipelines:
     materials:
       authorizer:
         git: https://github.com/C0k3/session
-        branch: development
+        branch: webpack
         whitelist:
         - lambda_functions/authorizer/**/*.*
         - "*.js"
