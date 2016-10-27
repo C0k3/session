@@ -24,7 +24,7 @@ pipelines:
           tasks:
           - script: |
               npm install
-              gulp test
+              node_modules/.bin/gulp test
       - lint:
           clean_workspace: true
           environment_variables:
@@ -38,7 +38,7 @@ pipelines:
           tasks:
           - script: |
               npm install
-              gulp lint
+              node_modules/.bin/gulp lint
       - code-coverage:
           clean_workspace: true
           environment_variables:
@@ -54,10 +54,10 @@ pipelines:
           tasks:
           - script: |
               npm install
-              nyc --reporter html gulp test
+              node_modules/.bin/nyc --reporter html gulp test
               true
           - script: |
-              nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+              node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
       - dist:
           clean_workspace: true
           environment_variables:
