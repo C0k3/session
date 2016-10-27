@@ -56,7 +56,7 @@ pipelines:
           tasks:
           - script: |
               npm install
-              node_modules/.bin/nyc --reporter html gulp test
+              node_modules/.bin/nyc --reporter html node_modules/.bin/gulp test
               true
           - script: |
               node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
