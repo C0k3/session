@@ -12,6 +12,7 @@ pipelines:
         - "*.json"
         - "*.opts"
         - "*.yml"
+        - "*.yaml"
     stages:
       - unit-testing:
           clean_workspace: true
