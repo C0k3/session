@@ -82,5 +82,7 @@ pipelines:
           clean_workspace: true
           tasks:
           - script: |
+              git checkout test-deploy
+              git pull
               npm install . --production
               sls deploy --stage test
