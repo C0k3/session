@@ -62,9 +62,9 @@ pipelines:
       #         node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
       - test-deploy:
           clean_workspace: true
-          environment_variables:
-            NODE_ENV: production
           tasks:
           - script: |
-              git push origin test-deploy
+              git checkout test-deploy
+              git rebase development
+              git push
               

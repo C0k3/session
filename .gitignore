@@ -10,3 +10,4 @@ test-results.xml
 .webpack
 .nyc_output
 coverage
+cruise-output
