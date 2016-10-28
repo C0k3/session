@@ -3,19 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
-  "scripts": {
-    "test": "NODE_ENV=test nyc mocha-webpack"
-  },
-  "nyc": {
-    "reporter": [
-      "text-summary"
-    ],
-    "exclude": [
-      ".tmp",
-      "**/*.test.js",
-      "node_modules"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/C0k3/session.git"
