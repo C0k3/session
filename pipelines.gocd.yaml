@@ -71,15 +71,14 @@ pipelines:
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
       - deploy-dev:
           clean_workspace: true
-          approval:
-            type: manual          
           tasks:
           - script: |
-              echo "Fun Test"
               npm install . --production
               sls deploy --stage dev
       - deploy-test:
           clean_workspace: true
+          approval:
+            type: manual          
           tasks:
           - script: |
               git checkout test-deploy
