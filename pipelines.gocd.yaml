@@ -66,5 +66,5 @@ pipelines:
             NODE_ENV: production
           tasks:
           - script: |
-              git push https://github.com/C0k3/session.git test-deploy
+              git push origin test-deploy
               
