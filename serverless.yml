@@ -71,9 +71,6 @@ functions:
   authorizer:
     handler: handler.authorizer
 
-custom:
-  webpackIncludeModules: true
-  
 #    you can add any of the following events
 #    events:
 #      - http:
