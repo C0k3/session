@@ -60,12 +60,17 @@ pipelines:
       #         true
       #     - script: |
       #         node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
-      - test-deploy:
+      # - test-deploy:
+      #     clean_workspace: true
+      #     tasks:
+      #     - script: |
+      #         source /etc/gitPassword
+      #         git checkout test-deploy
+      #         git rebase development
+      #         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
+      - deploy-dev:
           clean_workspace: true
           tasks:
           - script: |
-              source /etc/gitPassword
-              git checkout test-deploy
-              git rebase development
-              git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
-              
+              npm install . --production
+              sls deploy --stage dev
