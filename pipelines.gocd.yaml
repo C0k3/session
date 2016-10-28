@@ -64,6 +64,7 @@ pipelines:
           clean_workspace: true
           tasks:
           - script: |
+              git config credential.helper store --file=/etc/git-credentials
               git checkout test-deploy
               git rebase development
               git push
