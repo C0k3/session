@@ -64,8 +64,8 @@ pipelines:
           clean_workspace: true
           tasks:
           - script: |
-              git config credential.helper store --file=/etc/git-credentials
+              source /etc/gitPassword
               git checkout test-deploy
               git rebase development
-              git push
+              git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session > /dev/null
               
