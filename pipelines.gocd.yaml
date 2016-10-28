@@ -14,52 +14,52 @@ pipelines:
         - "*.yml"
         - "*.yaml"
     stages:
-      # - unit-testing:
-      #     clean_workspace: true
-      #     environment_variables:
-      #       NODE_ENV: development
-      #     artifacts:
-      #     - test:
-      #         source: test-results.xml
-      #         destination: test-reports/
-      #     tasks:
-      #     - script: |
-      #         npm install
-      #         node_modules/.bin/gulp test
-      # - lint:
-      #     clean_workspace: true
-      #     environment_variables:
-      #       NODE_ENV: development
-      #     artifacts:
-      #     - build:
-      #         source: jshint.html
-      #     tabs:
-      #       lint: jshint.html
-      #     tasks:
-      #     - script: |
-      #         touch jshint.html
-      #         npm install
-      #         node_modules/.bin/gulp lint
-      #         true
-      # - code-coverage:
-      #     clean_workspace: true
-      #     environment_variables:
-      #       NODE_ENV: test
-      #       COV_LINES: 1
-      #       COV_FUNCTIONS: 1
-      #       COV_BRANCHES: 1
-      #     artifacts:
-      #     - build:
-      #         source: coverage
-      #     tabs:
-      #       code-coverage: coverage/index.html
-      #     tasks:
-      #     - script: |
-      #         npm install
-      #         node_modules/.bin/nyc --reporter html node_modules/.bin/gulp test
-      #         true
-      #     - script: |
-      #         node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+      - unit-testing:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - test:
+              source: test-results.xml
+              destination: test-reports/
+          tasks:
+          - script: |
+              npm install
+              node_modules/.bin/gulp test
+      - lint:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: development
+          artifacts:
+          - build:
+              source: jshint.html
+          tabs:
+            lint: jshint.html
+          tasks:
+          - script: |
+              touch jshint.html
+              npm install
+              node_modules/.bin/gulp lint
+              true
+      - code-coverage:
+          clean_workspace: true
+          environment_variables:
+            NODE_ENV: test
+            COV_LINES: 1
+            COV_FUNCTIONS: 1
+            COV_BRANCHES: 1
+          artifacts:
+          - build:
+              source: coverage
+          tabs:
+            code-coverage: coverage/index.html
+          tasks:
+          - script: |
+              npm install
+              node_modules/.bin/nyc --reporter html node_modules/.bin/gulp test
+              true
+          - script: |
+              node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
       - test-deploy:
           clean_workspace: true
           tasks:
