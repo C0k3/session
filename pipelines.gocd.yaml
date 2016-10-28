@@ -67,5 +67,5 @@ pipelines:
               source /etc/gitPassword
               git checkout test-deploy
               git rebase development
-              git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session > /dev/null
+              git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
               
