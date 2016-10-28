@@ -1,25 +1,4 @@
 pipelines:
-  authorizer-test:
-    group: lambda
-    label_template: "${authorizer[:8]}"
-    materials:
-      authorizer:
-        git: https://github.com/C0k3/session
-        branch: test-deploy
-        whitelist:
-        - lambda_functions/authorizer/**/*.*
-        - "*.js"
-        - "*.json"
-        - "*.opts"
-        - "*.yml"
-        - "*.yaml"
-    stages:
-      - deploy-test:
-          clean_workspace: true
-          tasks:
-          - script: |
-              npm install . --production
-              sls deploy --stage test
   authorizer:
     group: lambda
     label_template: "${authorizer[:8]}"
@@ -90,12 +69,18 @@ pipelines:
               git checkout test-deploy
               git rebase development --continue
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
-      # - deploy-dev:
-      #     clean_workspace: true
-      #     approval:
-      #       type: manual          
-      #     tasks:
-      #     - script: |
-      #         echo "Fun Test"
-      #         npm install . --production
-      #         sls deploy --stage dev
+      - deploy-dev:
+          clean_workspace: true
+          approval:
+            type: manual          
+          tasks:
+          - script: |
+              echo "Fun Test"
+              npm install . --production
+              sls deploy --stage dev
+      - deploy-test:
+          clean_workspace: true
+          tasks:
+          - script: |
+              npm install . --production
+              sls deploy --stage test
