@@ -21,7 +21,10 @@ cd ..
 rm -rf n
 /usr/local/bin/n stable
 /usr/local/bin/npm install lodash co-sleep co co-parallel co-request aws-sdk js-yaml forever http-server stanza -g
+
+# /etc/gitPassword sets $GIT_USERNAME and $GIT_PASSWORD env vars used in the gocd pipeline
 aws s3 cp s3://go-serverless/gitPassword /etc/gitPassword || true
+
 echo -e "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <cruise xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
   xsi:noNamespaceSchemaLocation=\"cruise-config.xsd\" schemaVersion=\"81\">
