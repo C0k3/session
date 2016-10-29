@@ -9,6 +9,11 @@
   },
   "author": "",
   "license": "ISC",
+  "nyc": {
+    "exclude": [
+      "lib/AuthPolicy.js"
+    ]
+  }
   "devDependencies": {
     "aws-sdk": "^2.4.14",
     "chai": "^3.5.0",
