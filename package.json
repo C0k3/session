@@ -11,7 +11,8 @@
   "license": "ISC",
   "nyc": {
     "exclude": [
-      "lib/AuthPolicy.js"
+      "lib/AuthPolicy.js",
+      "node_modules"
     ]
   },
   "devDependencies": {
