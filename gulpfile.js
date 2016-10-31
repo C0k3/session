@@ -23,7 +23,9 @@ gulp.task('lint', function() {
   	'./handler.js',
     './lib/**/*.js',
     './gulpfile.js',
-    './test/**/*.js'])
+    './test/**/*.js',
+    'package.json',
+    './config/**/*.json'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish_lint_reporter))
     .pipe(jshint.reporter('gulp-jshint-html-reporter', {
