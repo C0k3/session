@@ -9,7 +9,7 @@ var proxyquire = require('proxyquire'),
     constants = require('../../lib/constants'),
     getSession = require('./getSession');
 
-describe('session check', function() {
+describe('getSession', function() {
     beforeEach(function() {
         this.sinon = sinon.sandbox.create();        
     });
