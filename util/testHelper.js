@@ -12,5 +12,11 @@ module.exports = {
     },
     lambdaEvent: {
         headers: { 'X-koms-clientid': '12345' }
+    },
+    mockLog: {
+        error: () => { return; },
+        warn: () => { return; },
+        info: () => { return; },
+        debug: () => { return; }
     }
 };

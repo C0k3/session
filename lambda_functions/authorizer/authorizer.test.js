@@ -15,9 +15,7 @@ describe('authorizer', function() {
         this.event = testHelper.lambdaEvent;
         this.makeProxy = (secret) => {
             let fakes = {
-                '../../lib/log': {
-                    error: () => { return; }
-                }   
+                '../../lib/log': testHelper.mockLog
             };
 
             if (secret) {
