@@ -13,7 +13,7 @@ pipelines:
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages:
+    stages: &stages
       - unit-testing:
           clean_workspace: true
           environment_variables:
@@ -64,7 +64,6 @@ pipelines:
           clean_workspace: true
           tasks:
           - script: |
-              echo "Hello"
               source /etc/gitPassword
               git checkout test-deploy
               git rebase --onto development origin
@@ -85,3 +84,18 @@ pipelines:
               git pull
               npm install . --production
               sls deploy --stage test
+  get-session:
+    group: lambda
+    label_template: "${get-session[:8]}"
+    materials:
+      get-session:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/get-session/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *stages
