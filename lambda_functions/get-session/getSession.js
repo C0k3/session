@@ -23,7 +23,6 @@ module.exports = function(event, context, cb) {
             if(at_expiresIn < 0) {
                 log.info('received expired token');
                 return cb(null, response(401, {
-                        requestId : context.awsRequestId,
                         message : 'Token expired'                    
                     }, true));
 
@@ -34,7 +33,6 @@ module.exports = function(event, context, cb) {
         .catch(err => {
 
             return cb(null, response(500, {
-                        requestId : context.awsRequestId,
                         message : err.message
                     }, true));
         });    

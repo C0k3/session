@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 var AuthPolicy = require('../../lib/AuthPolicy');
 var log = require('../../lib/log');
 var token = require('../../lib/token');
-var secret = require('../../lib/generate-secret');
+var secrets = require('../../lib/secrets');
 var constants = require('../../lib/constants');
 
 //Custom Authorizer reference: http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-input
@@ -22,7 +22,7 @@ module.exports = function(event, context, cb) {
             let decoded = {};
             try {
                 //this will throw an invalid signature if the wrong secret were used to sign the request OR if the token has expired
-                decoded = jwt.verify(parsedToken, secret(clientId), { audience: clientId });
+                decoded = jwt.verify(parsedToken, secrets.clientIdDigest(clientId), { audience: clientId });
             } catch (e) {
                 log.error(`error decoding access_token: ${e}`);
                 return cb('Unauthorized', e);

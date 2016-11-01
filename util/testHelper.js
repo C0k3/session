@@ -1,5 +1,4 @@
 'use strict';
-var proxyquire = require('proxyquire');
 
 module.exports = {
     check: (done, test) => {
@@ -10,8 +9,15 @@ module.exports = {
             done(e);
         }
     },
-    lambdaEvent: {
-        headers: { 'X-koms-clientid': '12345' }
+    lambdaEvent: function (body) {
+        let event = {};
+        event['headers'] = { 'X-koms-clientid': '12345' };
+
+        if (body) {
+            event['body'] = JSON.stringify(body);
+        }
+
+        return event;
     },
     mockLog: {
         error: () => { return; },

@@ -12,15 +12,17 @@ var authorizer = require('./authorizer');
 describe('authorizer', function() {
     beforeEach(function() {
         this.sinon = sinon.sandbox.create();
-        this.event = testHelper.lambdaEvent;
+        this.event = testHelper.lambdaEvent();
         this.makeProxy = (secret) => {
             let fakes = {
                 '../../lib/log': testHelper.mockLog
             };
 
             if (secret) {
-                fakes['../../lib/generate-secret'] = (clientId) => {
-                    return 'secret';
+                fakes['../../lib/secrets'] = {
+                    clientIdDigest: () => {
+                        return 'secret';
+                    }
                 };
             }
 
