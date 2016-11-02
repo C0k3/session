@@ -1,6 +1,5 @@
 'use strict';
 var jwt = require('jsonwebtoken');
-var AuthPolicy = require('../../lib/AuthPolicy');
 var log = require('../../lib/log');
 var token = require('../../lib/token');
 var secrets = require('../../lib/secrets');
@@ -16,9 +15,10 @@ module.exports = function(event, context, cb) {
     try {
         clientId = authorization.getClientId(event);
     } catch (err) {
+        log.error(err.message);
         return cb('Fail', {
-            name: 'missing_client_id',
-            message: `${constants.CLIENT_ID_HEADER} key missing in request header`
+            name: 'client_id_error',
+            message: err.message
         });
     }
 

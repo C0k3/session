@@ -144,7 +144,7 @@ describe('authorizer', function() {
         });   
     });
 
-    it('should throw an error if client id is missing in the header', function(done) {
+    it(`should fail when ${constants.CLIENT_ID_HEADER} is not in the header`, function(done) {
         //setup
         this.event.headers = {};
         let proxy = this.makeProxy();
@@ -153,7 +153,7 @@ describe('authorizer', function() {
         proxy(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Fail');
-                assert.equal(data.name, 'missing_client_id');
+                assert.equal(data.name, 'client_id_error');
                 assert.equal(data.message, `${constants.CLIENT_ID_HEADER} key missing in request header`);
             });
         });
