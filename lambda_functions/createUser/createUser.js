@@ -30,6 +30,11 @@ module.exports = function(event, context, cb) {
         let hashedPassword = secrets.passwordDigest(body.password);
 
         //TODO: save to database; test for exsiting record first
+        //for traditional account: create uuid
+        //for social accounts - account id/user id
+        
+        //QUESTION: should use a partition/sort value? id|IdP ?
+        //answer: account merges will guide me?
 
         return cb(null, response(200, {
                     message: 'new user created' 
