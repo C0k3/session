@@ -80,14 +80,41 @@ functions:
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
 
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: Password
+          AttributeType: S
+        - AttributeName: UserName
+          AttributeType: S
+        - AttributeName: Id
+          AttributeType: S
+        GlobalSecondaryIndexes:
+        - IndexName: Password-index
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            WriteCapacityUnits: 5
+            ReadCapacityUnits: 5
+          KeySchema:
+          - KeyType: HASH
+            AttributeName: Password
+        - IndexName: UserName-index
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            WriteCapacityUnits: 5
+            ReadCapacityUnits: 5
+          KeySchema:
+          - KeyType: HASH
+            AttributeName: UserName
+        ProvisionedThroughput:
+          WriteCapacityUnits: 5
+          ReadCapacityUnits: 5
+        TableName: ${opt:stage}-KODemoUsers
+        KeySchema:
+        - KeyType: HASH
+          AttributeName: Id
