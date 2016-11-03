@@ -108,25 +108,4 @@ describe('createUser', function() {
             });
         });
     });
-
-    it('should hash password', function(done) {
-        let event = testHelper.lambdaEvent({ username: 'myman', password: testPassword });
-
-        this.createdUserProxy(event, {}, (err, data) => {
-            testHelper.check(done, () => {
-                assert(this.hashSpy.calledWith(testPassword));
-                expect(this.hashSpy.returnValues.length).to.equal(1);
-                expect(this.hashSpy.returnValues[0]).to.equal('1d807cf1c2eff9e84090db1d05020a236b1d6b96252d7894915d72d8b9478331');
-            });
-        });
-    });
-/*
-    it('should check if user already exists before storing new user item', function(done) {
-
-    });
-
-    it('should store new user to DynamoDB', function(done) {
-
-    });
-*/
 });

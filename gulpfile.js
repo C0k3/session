@@ -13,7 +13,7 @@ gulp.task('test', function() {
         NODE_ENV: 'test'
     });
 
-    return gulp.src('lambda_functions/**/*.test.js', {read:false})
+    return gulp.src(['lambda_functions/**/*.test.js', 'lib/**/*.test.js'], {read:false})
         .pipe(envs)
         .pipe(mocha({ timeout: 5000 }));
 });

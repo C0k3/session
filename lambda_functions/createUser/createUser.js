@@ -27,9 +27,6 @@ module.exports = function(event, context, cb) {
             }, true))
         }
 
-        //NOTE: there may not be a password!
-        let hashedPassword = secrets.passwordDigest(body.password);
-
         //TODO: save to database; test for existing record first
         //for traditional account: create uuid
         //for social accounts - account id/user id
