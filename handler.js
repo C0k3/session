@@ -17,6 +17,16 @@ module.exports.authorizer = (event, context, cb) => {
     require('./lambda_functions/authorizer/authorizer')(event, context, cb);
 };
 
+module.exports.getSession = (event, context, cb) => {
+    setEnvVars(event.requestContext);
+    require('./lambda_functions/get-session/getSession')(event, context, cb);
+};
+
+module.exports.createUser = (event, context, cb) => {
+    setEnvVars(event.requestContext);
+    require('./lambda_functions/createUser/createUser')(event, context, cb);
+};
+
 function setEnvVars(requestContext) {
     process.env.NODE_ENV = requestContext.stage;
     //set any additional env vars here
