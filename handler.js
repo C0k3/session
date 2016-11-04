@@ -12,9 +12,18 @@ module.exports.ping = (event, context, cb) => {
 };
 
 module.exports.authorizer = (event, context, cb) => {
-    //NOTE: if the function bound to this authorizer is a "lambda" inegration, will the requestContext object be available?
-    setEnvVars(event.requestContext);
+    /*
+        {
+            "type": "TOKEN",
+            "authorizationToken": "123",
+            "methodArn": "arn:aws:execute-api:us-east-1:....5.....:uxyeaewr96/patrick/POST/user"
+        }
+    */
     require('./lambda_functions/authorizer/authorizer')(event, context, cb);
+};
+
+module.exports.clientIdAuthorizer = (event, context, cb) => {
+    require('./lambda_functions/clientIdAuthorizer/clientIdAuthorizer')(event, context, cb);
 };
 
 module.exports.getSession = (event, context, cb) => {

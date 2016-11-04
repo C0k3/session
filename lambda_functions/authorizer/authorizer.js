@@ -13,7 +13,7 @@ module.exports = function(event, context, cb) {
     //NOTE: I'm not happy with the way this is reading - think about using promises to de-clutter
     let clientId = '';
     try {
-        clientId = authorization.getClientId(event);
+        clientId = authorization.checkClientId(event.headers[constants.CLIENT_ID_HEADER]);
     } catch (err) {
         log.error(err.message);
         return cb('Fail', {

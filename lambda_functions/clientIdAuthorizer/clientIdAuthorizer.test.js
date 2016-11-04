@@ -15,9 +15,8 @@ describe('clientIdAuthorizer', function() {
         });
     });    
 
-    it(`should fail when ${constants.CLIENT_ID_HEADER} is not in the header`, function(done) {
+    it(`should fail when authorizationToken is not defined`, function(done) {
         let event = testHelper.lambdaEvent();
-        event.headers = {};
 
         this.clientIdAuthorizer(event, {}, (err, data) => {
             testHelper.check(done, () => {

@@ -8,7 +8,7 @@ module.exports = function(event, context, cb) {
 
     let clientId = '';
     try {
-        clientId = authorization.getClientId(event);
+        clientId = authorization.checkClientId(event.authorizationToken);
     } catch (err) {
         log.error(err);
         return cb('Fail', {
