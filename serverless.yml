@@ -79,7 +79,6 @@ functions:
               name: clientIdAuthorizer
               resultTtlInSeconds: 3
               identitySource: method.request.header.X-koms-clientid
-
   authorizer:
     handler: handler.authorizer
   clientIdAuthorizer:
