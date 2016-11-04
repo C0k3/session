@@ -7,7 +7,7 @@ var proxyquire = require('proxyquire'),
     testHelper = require('../../util/testHelper'),
     jwt = require('jsonwebtoken'),
     constants = require('../../lib/constants'),
-    getSession = require('./getSession');
+    getSession = require('./get-session');
 
 describe('getSession', function() {
     beforeEach(function() {
