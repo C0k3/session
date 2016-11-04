@@ -108,4 +108,11 @@ describe('createUser', function() {
             });
         });
     });
+
+//TODO: implement
+/*
+    it('should check if user already exists before storing new user item', function(done) {
+
+    });
+*/
 });
