@@ -15,24 +15,24 @@ module.exports = function(event, context, cb) {
                 at_expiresIn = jwt.decode(token).exp - Math.floor(Date.now() / 1000);        
             } catch (e) {
                 log.error(e);
-                return cb(null, response(500, {
+                return cb(null, response.create(500, {
                     message:'Error in getting accessToken Expiry date' 
                 }, true));
             } 
 
             if(at_expiresIn < 0) {
                 log.info('received expired token');
-                return cb(null, response(401, {
+                return cb(null, response.create(401, {
                         message : 'Token expired'                    
                     }, true));
 
             } else {    
-                return cb(null, response(200, { access_token_expires_in: at_expiresIn }, true));
+                return cb(null, response.create(200, { access_token_expires_in: at_expiresIn }, true));
             }        
         })
         .catch(err => {
 
-            return cb(null, response(500, {
+            return cb(null, response.create(500, {
                         message : err.message
                     }, true));
         });    

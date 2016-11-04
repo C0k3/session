@@ -1,6 +1,6 @@
 {
-  "RefreshTokenTable": "test-KODemoRefreshTokens",
-  "UsersTable": "test-KODemoUsers",
+  "RefreshTokenTable": "patrick-KODemoRefreshTokens",
+  "UsersTable": "patrick-KODemoUsers",
   "RefreshTokenExpiration": "30 days",
   "AccessTokenExpiration": "1h",
   "DynamoDB": {
