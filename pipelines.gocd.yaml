@@ -15,7 +15,7 @@ pipelines:
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages: &stages
+    stages: &functionStages
       - unit-testing:
           clean_workspace: true
           environment_variables:
@@ -119,4 +119,4 @@ pipelines:
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages: *stages
+    stages: *functionStages
