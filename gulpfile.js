@@ -6,21 +6,37 @@ var mocha = require('gulp-mocha');
 var jshint = require('gulp-jshint');
 var stylish_lint_reporter = require('jshint-stylish');
 var env = require('gulp-env');
+var nconf = require('nconf');
+
+nconf.argv({
+  f: {
+    alias: 'function',
+    describe: 'Function name',
+    demand: false,
+    default : ''
+  }
+});
 
 gulp.task('test', function() {
     const envs = env.set({
         stage: 'test',
         NODE_ENV: 'test'
     });
+    
+    const target = `lambda_functions/${nconf.get('f') ? nconf.get('f') + '/' : ''}**/*.test.js`;
 
-    return gulp.src(['lambda_functions/**/*.test.js', 'lib/**/*.test.js'], {read:false})
+    return gulp.src( [ target, 'lib/**/*.test.js'], { read : false } )
         .pipe(envs)
         .pipe(mocha({ timeout: 5000 }));
 });
 
 gulp.task('lint', function() {
+
+  const target = `lambda_functions/${nconf.get('f') ? nconf.get('f') + '/' : ''}**/*.js`;
+
   return gulp.src([
   	'./handler.js',
+    target,
     './lib/**/*.js',
     './gulpfile.js',
     './test/**/*.js',
