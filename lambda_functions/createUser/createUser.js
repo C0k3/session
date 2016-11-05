@@ -17,7 +17,7 @@ module.exports = function(event, context, cb) {
             return cb(null, response.create(500, {
                 name: 'InvalidUsernameOrPassword', //DRY: consider using a shared error type
                 message: 'The username or password was not provided'
-            }, true))
+            }, true));
         }
 
         //thanks: https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
@@ -26,7 +26,7 @@ module.exports = function(event, context, cb) {
             return cb(null, response.create(500, {
                 name: 'InvalidUsernameOrPassword',
                 message: 'Weak password strength'
-            }, true))
+            }, true));
         }
 
         //TODO: test for existing record first
@@ -48,5 +48,4 @@ module.exports = function(event, context, cb) {
         log.error(err);
         cb(null, response.genericError());
     }
-
-}
+};

@@ -19,4 +19,4 @@ module.exports = function(event, context, cb) {
     let policy = authorization.createAuthPolicy(event, clientId);
     policy.allowAllMethods();
     cb(null, policy.build());
-}
+};

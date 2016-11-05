@@ -1,3 +1,4 @@
+/*jshint expr: true*/
 'use strict';
 var proxyquire = require('proxyquire'),
     chai = require('chai'),
