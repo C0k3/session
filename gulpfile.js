@@ -37,7 +37,7 @@ gulp.task('lint', function() {
   return gulp.src([
     './lambda_functions/**/*.js',
   	'./handler.js',
-//    target,
+    target,
     './lib/**/*.js',
     './gulpfile.js',
     './test/**/*.js',
