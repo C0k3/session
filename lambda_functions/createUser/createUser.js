@@ -6,17 +6,14 @@ var db = require('../../lib/db');
 var constants = require('../../lib/constants');
 
 module.exports = function(event, context, cb) {
-    //TODO: get username and password from response, has password and store in database
-    //NOTE: need to validate client Id
-
     try {
         let body = JSON.parse(event.body);
 
-        if (body.username === undefined || body.password === undefined || body.username === '' || body.password === '') {
-            log.info(`username or password missing in request: ${body}`);
+        if (!body.email || !body.password) {
+            log.info(`email or password missing in request: ${body}`);
             return cb(null, response.create(500, {
-                name: 'InvalidUsernameOrPassword', //DRY: consider using a shared error type
-                message: 'The username or password was not provided'
+                name: 'InvalidEmailOrPassword', //DRY: consider using a shared error type
+                message: 'The email or password was not provided'
             }, true));
         }
 
@@ -24,22 +21,44 @@ module.exports = function(event, context, cb) {
         let strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
         if (!strongPassword.test(body.password)) {
             return cb(null, response.create(500, {
-                name: 'InvalidUsernameOrPassword',
+                name: 'InvalidEmailOrPassword',
                 message: 'Weak password strength'
             }, true));
         }
 
-        //TODO: test for existing record first
-        db.saveUser(body, event.headers[constants.CLIENT_ID_HEADER])
-            .then(() => {
-                return cb(null, response.create(200, {
-                    message: 'new user created' 
-                }, true));
+        //this: https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
+        let emailFormat = /.+@.+\..+/i;
+        if (!emailFormat.test(body.email)) {
+            return cb(null, response.create(500, {
+                name: 'InvalidEmailOrPassword',
+                message: 'Invalid email format'
+            }, true));
+        }
+
+        db.getUser(body)
+            .then(data => {
+                log.info(`getUser returned ${JSON.stringify(data)}`);
+                if(data.Items.length !== 0) {
+                    return cb(null, response.create(200, {
+                            message: 'user already exists' 
+                        }, true));
+                }
+
+                db.saveUser(body, event.headers[constants.CLIENT_ID_HEADER])
+                    .then(() => {
+                        return cb(null, response.create(200, {
+                            message: 'new user created' 
+                        }, true));
+                    })
+                    .catch(err => {
+                        log.error(err);
+                        cb(null, response.genericError());
+                    });
             })
             .catch(err => {
                 log.error(err);
                 cb(null, response.genericError());
-            });
+            });        
         
         //QUESTION: should use a partition/sort value? id|IdP ?
         //answer: account merges will guide me?        

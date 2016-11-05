@@ -11,22 +11,18 @@
 #
 # Happy Coding!
 
-service: my-idp # NOTE: update this with your service name
+service: my-idp
 
 provider:
   name: aws
   runtime: nodejs4.3
-  #profile: ko-playground-admin
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
-
+  cfLogs: true
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "dynamodb:*"
       Resource: "*"
+  #profile: ko-playground-admin
 
 package:
   exclude:
@@ -65,29 +61,18 @@ functions:
   clientIdAuthorizer:
     handler: handler.clientIdAuthorizer
 
-#    you can add any of the following events
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-
 resources:
   Resources:
     UserTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-        - AttributeName: Password
-          AttributeType: S
-        - AttributeName: UserName
+        - AttributeName: Email
           AttributeType: S
         - AttributeName: Id
           AttributeType: S
         GlobalSecondaryIndexes:
-        - IndexName: Password-index
+        - IndexName: Email-index
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
@@ -95,16 +80,7 @@ resources:
             ReadCapacityUnits: 5
           KeySchema:
           - KeyType: HASH
-            AttributeName: Password
-        - IndexName: UserName-index
-          Projection:
-            ProjectionType: ALL
-          ProvisionedThroughput:
-            WriteCapacityUnits: 5
-            ReadCapacityUnits: 5
-          KeySchema:
-          - KeyType: HASH
-            AttributeName: UserName
+            AttributeName: Email
         ProvisionedThroughput:
           WriteCapacityUnits: 5
           ReadCapacityUnits: 5

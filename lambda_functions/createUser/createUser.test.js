@@ -40,7 +40,7 @@ describe('createUser', function() {
         });
     });
 
-    it('should validate that username field is present in request', function(done) {
+    it('should validate that email field is present in request', function(done) {
         let event = testHelper.lambdaEvent({ password: '123' });        
 
         this.createdUserProxy(event, {}, (err, data) => {
@@ -48,64 +48,78 @@ describe('createUser', function() {
             testHelper.check(done, () => {
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(500);
-                expect(body.name).to.equal('InvalidUsernameOrPassword');
-                expect(body.message).to.equal('The username or password was not provided');
+                expect(body.name).to.equal('InvalidEmailOrPassword');
+                expect(body.message).to.equal('The email or password was not provided');
             });
         });
     });
 
-    it('should validate that username field is not empty in request', function(done) {
-        let event = testHelper.lambdaEvent({ username: '', password: '123' });        
+    it('should validate that email field is not empty in request', function(done) {
+        let event = testHelper.lambdaEvent({ email: '', password: '123' });        
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(500);
-                expect(body.name).to.equal('InvalidUsernameOrPassword');
-                expect(body.message).to.equal('The username or password was not provided');
+                expect(body.name).to.equal('InvalidEmailOrPassword');
+                expect(body.message).to.equal('The email or password was not provided');
             });
         });
     });
 
     it('should validate that password field is present in request', function(done) {
-        let event = testHelper.lambdaEvent({ username: 'myman' });        
+        let event = testHelper.lambdaEvent({ email: 'myman@me.com' });        
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(500);
-                expect(body.name).to.equal('InvalidUsernameOrPassword');
-                expect(body.message).to.equal('The username or password was not provided');
+                expect(body.name).to.equal('InvalidEmailOrPassword');
+                expect(body.message).to.equal('The email or password was not provided');
             });
         });
     });
 
     it('should validate that password field is not empty in request', function(done) {
-        let event = testHelper.lambdaEvent({ username: 'myman', password: '' });    
+        let event = testHelper.lambdaEvent({ email: 'myman@me.com', password: '' });    
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(500);
-                expect(body.name).to.equal('InvalidUsernameOrPassword');
-                expect(body.message).to.equal('The username or password was not provided');
+                expect(body.name).to.equal('InvalidEmailOrPassword');
+                expect(body.message).to.equal('The email or password was not provided');
             });
         });
     });
 
     it('should enforce strong password validation', function(done) {
-        let event = testHelper.lambdaEvent({ username: 'myman', password: 'notgood' });
+        let event = testHelper.lambdaEvent({ email: 'myman@me.com', password: 'notgood' });
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(500);
-                expect(body.name).to.equal('InvalidUsernameOrPassword');
+                expect(body.name).to.equal('InvalidEmailOrPassword');
                 expect(body.message).to.equal('Weak password strength');
+            });
+        });
+    });
+
+    it('should validate email format', function(done) {
+        let event = testHelper.lambdaEvent({ email: 'myman', password: testPassword });
+
+        this.createdUserProxy(event, {}, (err, data) => {
+            let body = JSON.parse(data.body);
+            testHelper.check(done, () => {
+                expect(err).to.be.null;
+                expect(data.statusCode).to.equal(500);
+                expect(body.name).to.equal('InvalidEmailOrPassword');
+                expect(body.message).to.equal('Invalid email format');
             });
         });
     });
