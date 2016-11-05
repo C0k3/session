@@ -1,10 +1,9 @@
 'use strict';
 var constants = require('../../lib/constants');
-var AuthPolicy = require('../../lib/AuthPolicy');
 var log = require('../../lib/log');
 var authorization = require('../../lib/authorization');
 
-module.exports = function(event, context, cb) {    
+module.exports = function(event, context, cb) {
 
     let clientId = '';
     try {
