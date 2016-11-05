@@ -37,7 +37,6 @@ module.exports = function(event, context, cb) {
 
         db.getUser(body)
             .then(data => {
-                log.info(`getUser returned ${JSON.stringify(data)}`);
                 if(data.Items.length !== 0) {
                     return cb(null, response.create(200, {
                             message: 'user already exists' 
