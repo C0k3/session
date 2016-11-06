@@ -11,17 +11,23 @@ var proxyquire = require('proxyquire'),
 //var createUser = require('./createUser');
 
 const testPassword = 'Iam@llright2';
+const testEmail = 'myman@me.com';
 
 describe('createUser', function() {
     beforeEach(function() {
         this.sinon = sinon.sandbox.create();
         this.hashSpy = this.sinon.spy(secrets.passwordDigest);
+        this.dbMock = {
+            getUser: this.sinon.spy(() => Promise.resolve({Items: [] })),
+            saveUser: this.sinon.spy()
+        };
 
         this.createdUserProxy = proxyquire('./createUser', {
             '../../lib/log': testHelper.mockLog,
             '../../lib/secrets': {
                 passwordDigest: this.hashSpy
-            }
+            },
+            '../../lib/db': this.dbMock
         });
     });
 
@@ -69,7 +75,7 @@ describe('createUser', function() {
     });
 
     it('should validate that password field is present in request', function(done) {
-        let event = testHelper.lambdaEvent({ email: 'myman@me.com' });        
+        let event = testHelper.lambdaEvent({ email: testEmail });        
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
@@ -83,7 +89,7 @@ describe('createUser', function() {
     });
 
     it('should validate that password field is not empty in request', function(done) {
-        let event = testHelper.lambdaEvent({ email: 'myman@me.com', password: '' });    
+        let event = testHelper.lambdaEvent({ email: testEmail, password: '' });    
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
@@ -97,7 +103,7 @@ describe('createUser', function() {
     });
 
     it('should enforce strong password validation', function(done) {
-        let event = testHelper.lambdaEvent({ email: 'myman@me.com', password: 'notgood' });
+        let event = testHelper.lambdaEvent({ email: testEmail, password: 'notgood' });
 
         this.createdUserProxy(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
@@ -125,9 +131,26 @@ describe('createUser', function() {
     });
 
 //TODO: implement
-/*
-    it('should check if user already exists before storing new user item', function(done) {
+
+    it('should check if user already exists before saving new user', function(done) {
+        let event = testHelper.lambdaEvent({ email: testEmail, password: testPassword });
+
+        this.createdUserProxy(event, {}, (err, data) => {
+            testHelper.check(done, () => {
+                expect(this.dbMock.getUser.calledOnce);
+            });
+        });
 
     });
-*/
+
+    it('should save new user', function(done) {
+        let event = testHelper.lambdaEvent({ email: testEmail, password: testPassword });
+
+        this.createdUserProxy(event, {}, (err, data) => {
+            testHelper.check(done, () => {
+                expect(this.dbMock.saveUser.calledOnce);
+            });
+        });
+    });
+
 });
