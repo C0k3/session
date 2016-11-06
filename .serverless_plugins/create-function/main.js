@@ -31,24 +31,33 @@ class ProviderDeployFunction {
   }
 
   beforeDeployFunction() {
-    
     let params = {
-      FunctionName: this.options.function,
+      FunctionName: this.function.name,
     };
-
+    
     this.aws.request( 'Lambda', 'getFunction', params, this.options.stage, this.serverless.service.provider.region )
-    .catch( () => {
+    .then( (result) => {
+      return Promise.resolve();
+    })
+    .catch( (err) => {
+      console.log( 'Err : ', err );
       params = {
         Code: {
           ZipFile: this.function.handler + ' = function() {}'
         },
-        FunctionName: this.options.function,
+        FunctionName: this.function.name,
         Handler: this.function.handler,
         Role: this.serverless.service.custom.IamRoleArnForCreate,
         Runtime: this.runtime
       };
+      console.log( 'Params : ', params );
       return this.aws.request('Lambda', 'createFunction', params, this.options.stage, this.serverless.service.provider.region)
-      .then( (output) => console.log );
+      .then( (output) => {
+       console.log( 'Output : ', output );
+      })
+      .catch( (err) => {
+        console.log( 'Err 2 : ', err );
+      });
     });
   }
 }
