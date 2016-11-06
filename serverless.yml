@@ -17,7 +17,7 @@ provider:
   name: aws
   runtime: nodejs4.3
   #profile: ko-playground-admin
-
+  
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -27,6 +27,12 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
+
+plugins:
+  - create-function
+
+custom:
+  IamRoleArnForCreate: arn:aws:iam::665342856034:role/ko-playground-dev-iam-profile-AppSrvrRole-1NEYAB5I2WX2B
 
 package:
   exclude:
@@ -39,6 +45,12 @@ functions:
     events:
       - http:
           path: ping
+          method: get
+  myTest:
+    handler: handler.myTest
+    events:
+      - http:
+          path: myTest
           method: get
   getSession:
     handler: handler.getSession
