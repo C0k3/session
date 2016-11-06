@@ -33,7 +33,7 @@ class ProviderDeployFunction {
   beforeDeployFunction() {
     
     let params = {
-      FunctionName: this.options.functionObj.name,
+      FunctionName: this.options.function,
     };
 
     this.provider.request( 'Lambda', 'getFunction', params, this.options.stage, this.serverless.service.provider.region )
