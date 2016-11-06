@@ -75,6 +75,7 @@ pipelines:
           tasks:
           - script: |
               npm install . --production
+              npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage dev
       - deploy-test:
           clean_workspace: true
@@ -85,6 +86,7 @@ pipelines:
               git checkout test-deploy
               git pull
               npm install . --production
+              npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage test
   getSession:
     group: lambda
