@@ -36,7 +36,7 @@ class ProviderDeployFunction {
       FunctionName: this.options.function,
     };
 
-    this.provider.request( 'Lambda', 'getFunction', params, this.options.stage, this.serverless.service.provider.region )
+    this.aws.request( 'Lambda', 'getFunction', params, this.options.stage, this.serverless.service.provider.region )
     .catch( () => {
       params = {
         Code: {
