@@ -104,7 +104,7 @@ pipelines:
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages: *stages
+    stages: *functionStages
   createUser:
     group: lambda
     label_template: "${createUser[:8]}"
