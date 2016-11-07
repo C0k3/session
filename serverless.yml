@@ -24,6 +24,12 @@ provider:
       Resource: "*"
   #profile: ko-playground-admin
 
+# plugins:
+#   - create-function
+
+# custom:
+#   IamRoleArnForCreate: arn:aws:iam::665342856034:role/ko-playground-dev-iam-profile-AppSrvrRole-1NEYAB5I2WX2B
+
 package:
   exclude:
     - gulpfile.js
@@ -35,6 +41,12 @@ functions:
     events:
       - http:
           path: ping
+          method: get
+  myTest:
+    handler: handler.myTest
+    events:
+      - http:
+          path: myTest
           method: get
   getSession:
     handler: handler.getSession
