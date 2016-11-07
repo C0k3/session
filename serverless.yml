@@ -100,3 +100,39 @@ resources:
         KeySchema:
         - KeyType: HASH
           AttributeName: Id
+    TokenTable:
+      Type: AWS::DynamoDB::Table
+      Properties:        
+        AttributeDefinitions:
+        - AttributeName: PrincipalId
+          AttributeType: S
+        - AttributeName: RefreshToken
+          AttributeType: S
+        - AttributeName: AccessToken
+          AttributeType: S
+        GlobalSecondaryIndexes:
+        - IndexName: PrincipalId-index
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            WriteCapacityUnits: 5
+            ReadCapacityUnits: 5
+          KeySchema:
+          - KeyType: HASH
+            AttributeName: PrincipalId
+        - IndexName: AccessToken-index
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            WriteCapacityUnits: 5
+            ReadCapacityUnits: 5
+          KeySchema:
+          - KeyType: HASH
+            AttributeName: AccessToken
+        ProvisionedThroughput:
+          WriteCapacityUnits: 5
+          ReadCapacityUnits: 5
+        TableName: ${opt:stage}-Tokens
+        KeySchema:
+        - KeyType: HASH
+          AttributeName: RefreshToken

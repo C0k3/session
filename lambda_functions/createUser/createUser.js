@@ -36,13 +36,14 @@ module.exports = function(event, context, cb) {
         }
 
         db.getUser(body)
-            .then(data => {
-                if(data.Items.length !== 0) {
+            .then(user => {
+                if(user.id) {
+                    console.log('return');
                     return cb(null, response.create(200, {
                             message: 'user already exists' 
                         }, true));
                 }
-
+                
                 db.saveUser(body, event.headers[constants.CLIENT_ID_HEADER])
                     .then(() => {
                         return cb(null, response.create(200, {
