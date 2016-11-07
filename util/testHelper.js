@@ -11,10 +11,10 @@ module.exports = {
     },
     lambdaEvent: function (body) {
         let event = {};
-        event['headers'] = { 'X-koms-clientid': '12345' };
+        event.headers = { 'X-koms-clientid': '12345' };
 
         if (body) {
-            event['body'] = JSON.stringify(body);
+            event.body = JSON.stringify(body);
         }
 
         return event;
