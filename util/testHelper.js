@@ -1,4 +1,5 @@
 'use strict';
+var constants = require('../lib/constants');
 
 module.exports = {
     check: (done, test) => {
@@ -11,12 +12,9 @@ module.exports = {
     },
     lambdaEvent: function (body) {
         let event = {};
-        event.headers = { 'X-koms-clientid': '12345' };
-
-        if (body) {
-            event.body = JSON.stringify(body);
-        }
-
+        event.headers = {};
+        event.headers[constants.CLIENT_ID_HEADER] = '12345';
+        event.body = body ? JSON.stringify(body) : '{}';
         return event;
     },
     mockLog: {
