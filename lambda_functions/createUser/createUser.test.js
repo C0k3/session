@@ -136,7 +136,7 @@ describe('createUser', function() {
     it('should check if user already exists before saving new user', function(done) {
         let event = testHelper.lambdaEvent({ email: testEmail, password: testPassword });
 
-        this.createUser({id: '1'})(event, {}, (err, data) => {
+        this.createUser({Id: '1'})(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(this.dbMock.getUser.calledOnce);

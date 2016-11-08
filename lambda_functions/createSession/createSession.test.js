@@ -13,7 +13,7 @@ describe('createSession', function() {
         this.sinon = sinon.sandbox.create();
 
         this.dbMock = {
-            getUser: this.sinon.spy(() => Promise.resolve({id: '1'})),
+            getUser: this.sinon.spy(() => Promise.resolve({Id: '1'})),
             saveTokens: this.sinon.spy(() => Promise.resolve())
         };
 
