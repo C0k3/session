@@ -15,7 +15,7 @@ module.exports.authorizer = (event, context, cb) => {
         {
             "type": "TOKEN",
             "authorizationToken": "123",
-            "methodArn": "arn:aws:execute-api:us-east-1:....5.....:uxyeaewr96/patrick/POST/user"
+            "methodArn": "arn:aws:execute-api:us-east-1:....5.....:uxyeaewr96/patrick/GET/user"
         }
     */
     require('./lambda_functions/authorizer/authorizer')(event, context, cb);
@@ -31,7 +31,6 @@ module.exports.getSession = (event, context, cb) => {
 };
 
 module.exports.createSession = (event, context, cb) => {
-    console.log('create session invoked');
     setEnvVars(event.requestContext);
     require('./lambda_functions/createSession/createSession')(event, context, cb);
 };

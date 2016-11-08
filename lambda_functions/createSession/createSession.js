@@ -8,7 +8,6 @@ var jwt = require('jsonwebtoken');
 var config = require(`../../config/${process.env.NODE_ENV}.json`); 
 
 module.exports = function(event, context, cb) {
-    console.log(`in createSession: ${event.body}`);
     let body = JSON.parse(event.body);
     if (!body.account_type) {
         return cb(null, response.create(500, {
@@ -24,7 +23,6 @@ module.exports = function(event, context, cb) {
                 let tokens = createTokens(user.Id, clientId);
                 //calculate seconds until expiration
                 let at_expiresIn = jwt.decode(tokens.access_token).exp - Math.floor(Date.now() / 1000);
-                console.log(`in db callback: ${JSON.stringify(user)}`);
 
                 db.saveTokens(tokens.refresh_token,
                     tokens.access_token,
