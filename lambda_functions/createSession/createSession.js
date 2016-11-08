@@ -8,6 +8,7 @@ var jwt = require('jsonwebtoken');
 var config = require(`../../config/${process.env.NODE_ENV}.json`); 
 
 module.exports = function(event, context, cb) {
+    console.log(`in createSession: ${event.body}`);
     let body = JSON.parse(event.body);
     if (!body.account_type) {
         return cb(null, response.create(500, {
@@ -20,13 +21,14 @@ module.exports = function(event, context, cb) {
     if (body.account_type === 'traditional') {
         db.getUser(body)
             .then(user => {
-                let tokens = createTokens(user.id, clientId);
+                let tokens = createTokens(user.Id, clientId);
                 //calculate seconds until expiration
                 let at_expiresIn = jwt.decode(tokens.access_token).exp - Math.floor(Date.now() / 1000);
+                console.log(`in db callback: ${JSON.stringify(user)}`);
 
                 db.saveTokens(tokens.refresh_token,
                     tokens.access_token,
-                    user.id,
+                    user.Id,
                     clientId)
                 .then(() => {
                     cb(null, response.create(200, {
@@ -34,6 +36,10 @@ module.exports = function(event, context, cb) {
                         refresh_token: tokens.refresh_token,
                         access_token_expires_in: at_expiresIn
                     }, true));
+                })
+                .catch(err => {
+                    log.error(err);
+                    cb(null, response.genericError());
                 }); 
             })
             .catch(err => {

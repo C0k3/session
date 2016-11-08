@@ -1,6 +1,5 @@
 'use strict';
 
-// Your first function handler
 module.exports.ping = (event, context, cb) => {
     setEnvVars(event.requestContext);
     let response = {
@@ -28,7 +27,13 @@ module.exports.clientIdAuthorizer = (event, context, cb) => {
 
 module.exports.getSession = (event, context, cb) => {
     setEnvVars(event.requestContext);
-    require('./lambda_functions/get-session/getSession')(event, context, cb);
+    require('./lambda_functions/getSession/getSession')(event, context, cb);
+};
+
+module.exports.createSession = (event, context, cb) => {
+    console.log('create session invoked');
+    setEnvVars(event.requestContext);
+    require('./lambda_functions/createSession/createSession')(event, context, cb);
 };
 
 module.exports.createUser = (event, context, cb) => {

@@ -58,6 +58,16 @@ functions:
               name: authorizer
               resultTtlInSeconds: 3
               identitySource: method.request.header.Authorization
+  createSession:
+    handler: handler.createSession
+    events:
+        - http:
+            path: session
+            method: POST
+            authorizer:
+              name: clientIdAuthorizer
+              resultTtlInSeconds: 300
+              identitySource: method.request.header.X-koms-clientid
   createUser:
     handler: handler.createUser
     events:
@@ -66,7 +76,7 @@ functions:
             method: POST
             authorizer: 
               name: clientIdAuthorizer
-              resultTtlInSeconds: 3
+              resultTtlInSeconds: 300
               identitySource: method.request.header.X-koms-clientid
   authorizer:
     handler: handler.authorizer
@@ -132,7 +142,7 @@ resources:
         ProvisionedThroughput:
           WriteCapacityUnits: 5
           ReadCapacityUnits: 5
-        TableName: ${opt:stage}-Tokens
+        TableName: ${opt:stage}-KODemoTokens
         KeySchema:
         - KeyType: HASH
           AttributeName: RefreshToken

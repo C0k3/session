@@ -1,5 +1,5 @@
 {
-  "RefreshTokenTable": "dev-KODemoRefreshTokens",
+  "RefreshTokenTable": "dev-KODemoTokens",
   "UsersTable": "dev-KODemoUsers",
   "RefreshTokenExpiration": "30 days",
   "AccessTokenExpiration": "1h",
