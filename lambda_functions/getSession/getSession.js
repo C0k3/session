@@ -13,10 +13,10 @@ module.exports = function(event, context, cb) {
             let at_expiresIn = 0;
             try {
                 at_expiresIn = jwt.decode(token).exp - Math.floor(Date.now() / 1000);        
-            } catch (e) {
-                log.error(e);
+            } catch (err) {
+                log.error(err);
                 return cb(null, response.create(500, {
-                    message:'Error in getting accessToken Expiry date' 
+                    message:'Error in getting accessToken Expiration date' 
                 }, true));
             } 
 
@@ -31,7 +31,6 @@ module.exports = function(event, context, cb) {
             }        
         })
         .catch(err => {
-
             return cb(null, response.create(500, {
                         message : err.message
                     }, true));
