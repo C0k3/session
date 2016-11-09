@@ -17,7 +17,6 @@ module.exports = function(event, context, cb) {
 
     token.parseAuthorizationHeader(event.authorizationToken)
         .then(parsedToken => {
-            //console.log(`parsed token: ${parsedToken}`);
             let decoded = {};
             try {
                 //this will throw an invalid signature if the wrong secret were used to sign the request OR if the token has expired
@@ -28,10 +27,8 @@ module.exports = function(event, context, cb) {
             }
 
             let principalId = decoded.sub;
-            //console.log('principal id:' + principalId);
             let policy = authorization.createAuthPolicy(event, principalId);
             policy.allowAllMethods();
-            //console.log(JSON.stringify(policy.build()));
             cb(null, policy.build());
         })
         .catch(err => {

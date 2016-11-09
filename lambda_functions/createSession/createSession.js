@@ -56,7 +56,7 @@ module.exports = function(event, context, cb) {
 };
 
 function createTokens(userId, clientId, apiId) {
-    let clientSecret = secrets.apiIdDigest(apiId);
+    let apiSecret = secrets.apiIdDigest(apiId);
     let tokenOptions = (expiresIn) => {
         return {
             expiresIn: expiresIn,
@@ -66,7 +66,7 @@ function createTokens(userId, clientId, apiId) {
     };
 
     return {
-        refresh_token: jwt.sign({ type: 'refresh' }, clientSecret, tokenOptions(config.RefreshTokenExpiration)),
-        access_token: jwt.sign({ type: 'access' }, clientSecret, tokenOptions(config.AccessTokenExpiration))
+        refresh_token: jwt.sign({ type: 'refresh' }, apiSecret, tokenOptions(config.RefreshTokenExpiration)),
+        access_token: jwt.sign({ type: 'access' }, apiSecret, tokenOptions(config.AccessTokenExpiration))
     };
 }
