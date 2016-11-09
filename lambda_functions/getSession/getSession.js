@@ -15,14 +15,14 @@ module.exports = function(event, context, cb) {
             } catch (err) {
                 log.error(err);
                 return cb(null, response.create(500, {
-                    message:'Error in getting accessToken Expiration date' 
+                    message:'Error in getting access_token Expiration date' 
                 }, true));
             } 
 
-            if(at_expiresIn < 0) {
+            if(at_expiresIn <= 0) {
                 log.info('received expired token');
                 return cb(null, response.create(401, {
-                        message : 'Token expired'                    
+                        message : 'access_token expired'                    
                     }, true));
 
             } else {    

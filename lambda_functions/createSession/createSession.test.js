@@ -17,10 +17,16 @@ describe('createSession', function() {
             saveTokens: this.sinon.spy(() => Promise.resolve())
         };
 
-        this.createSession = proxyquire('./createSession', {
-            '../../lib/log': testHelper.mockLog,
-            '../../lib/db': this.dbMock
-        });
+        this.createSession = function(emptyUser) {
+            if (emptyUser) {
+                this.dbMock.getUser = this.sinon.spy(() => Promise.resolve(undefined));
+            }
+            
+            return proxyquire('./createSession', {
+                '../../lib/log': testHelper.mockLog,
+                '../../lib/db': this.dbMock
+            });
+        }.bind(this);
     });
 
     afterEach(function() {
@@ -29,7 +35,7 @@ describe('createSession', function() {
 
     it('should throw an error if account_type is missing in the request', function(done) {
         let event = testHelper.lambdaEvent();
-        this.createSession(event, {}, (err, data) => {
+        this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).is.null;
@@ -41,7 +47,7 @@ describe('createSession', function() {
 
     it('should get user from database for traditional account types', function(done) {
         let event = testHelper.lambdaEvent({account_type: 'traditional'});
-        this.createSession(event, {}, (err, data) => {
+        this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(this.dbMock.getUser.calledOnce);
@@ -51,7 +57,7 @@ describe('createSession', function() {
 
     it('should save token for traditional account types', function(done) {
         let event = testHelper.lambdaEvent({account_type: 'traditional'});
-        this.createSession(event, {}, (err, data) => {
+        this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(this.dbMock.saveTokens.calledOnce);
@@ -66,7 +72,7 @@ describe('createSession', function() {
 
     it('should return error for unsupported account types', function(done) {
         let event = testHelper.lambdaEvent({account_type: 'instagram'});
-        this.createSession(event, {}, (err, data) => {
+        this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
@@ -74,6 +80,19 @@ describe('createSession', function() {
                 expect(body.message).to.equal('unsupported account_type');
             });
         });
+    });
+
+    it('should return error for non-existing user', function(done) {
+        let event = testHelper.lambdaEvent({account_type: 'traditional'});
+        this.createSession(true)(event, {}, (err, data) => {
+            let body = JSON.parse(data.body);
+            testHelper.check(done, () => {
+                expect(err).to.be.null;
+                expect(data.statusCode).to.equal(500);
+                expect(body.message).to.equal('user not found');
+            });
+        });
+
     });
 
 });

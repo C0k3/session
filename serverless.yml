@@ -67,7 +67,7 @@ functions:
             authorizer:
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
-              identitySource: method.request.header.X-koms-clientid
+              identitySource: method.request.header.x-koms-clientid
   createUser:
     handler: handler.createUser
     events:
@@ -77,7 +77,7 @@ functions:
             authorizer: 
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
-              identitySource: method.request.header.X-koms-clientid
+              identitySource: method.request.header.x-koms-clientid
   authorizer:
     handler: handler.authorizer
   clientIdAuthorizer:

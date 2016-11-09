@@ -21,6 +21,12 @@ module.exports = function(event, context, cb) {
     if (body.account_type === 'traditional') {
         db.getUser(body)
             .then(user => {
+                if(!user) {
+                    return cb(null, response.create(500, {
+                        message: 'user not found'
+                    }, true));
+                }
+
                 let tokens = createTokens(user.Id, clientId, apiId);
                 //calculate seconds until expiration
                 let at_expiresIn = jwt.decode(tokens.access_token).exp - Math.floor(Date.now() / 1000);
