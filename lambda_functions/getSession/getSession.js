@@ -7,7 +7,6 @@ var config = require(`../../config/${process.env.NODE_ENV}.json`);
 var constants = require('../../lib/constants');
 
 module.exports = function(event, context, cb) {    
-    console.log('in getSession');
     token.parseAuthorizationHeader(event.headers[constants.AUTHORIZATION_HEADER])
         .then(token => {
             let at_expiresIn = 0;
