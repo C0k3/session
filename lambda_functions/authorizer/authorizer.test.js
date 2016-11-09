@@ -13,6 +13,7 @@ describe('authorizer', function() {
     beforeEach(function() {
         this.sinon = sinon.sandbox.create();
         this.event = testHelper.lambdaEvent();
+        this.event.methodArn = 'arn:aws:execute-api:us-east-1:...5....:123zzz/patrick/GET/session';
         this.makeProxy = (secret) => {
             let fakes = {
                 '../../lib/log': testHelper.mockLog
@@ -20,7 +21,7 @@ describe('authorizer', function() {
 
             if (secret) {
                 fakes['../../lib/secrets'] = {
-                    clientIdDigest: () => {
+                    apiIdDigest: () => {
                         return 'secret';
                     }
                 };
@@ -37,7 +38,7 @@ describe('authorizer', function() {
 
     it('should throw an error if no Authorization header is in the request', function(done) {
         //run and verify
-        authorizer(this.event, {}, (err, data) => {
+        this.makeProxy()(this.event, {}, (err, data) => {
             testHelper.check(done, () => {                
                 assert.equal(err, 'Fail');
                 assert.equal(data.name, 'no_header');
@@ -50,7 +51,7 @@ describe('authorizer', function() {
         this.event.authorizationToken = 'whatevs';
 
         //run and verify
-        authorizer(this.event, {}, (err, data) => {
+        this.makeProxy()(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Fail');
                 assert.equal(data.name, 'credentials_bad_format');
@@ -63,7 +64,7 @@ describe('authorizer', function() {
         this.event.authorizationToken = 'blah 1234';
 
         //run and verify
-        authorizer(this.event, {}, (err, data) => {
+        this.makeProxy()(this.event, {}, (err, data) => {
             testHelper.check(done, () => {
                 assert.equal(err, 'Fail');
                 assert.equal(data.name, 'credentials_bad_scheme');
@@ -103,8 +104,8 @@ describe('authorizer', function() {
         });   
     });
 
-    it('should return an "Unauthorized" error if access_token was signed with a different client id', function(done) {
-        this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NzE0NjUwOTAsImF1ZCI6IjY3ODQ5In0.3rBsPl94pesw70b4u1BugCxTitxFuVM0VZrt7ahDQJg';
+    it('should return an "Unauthorized" error if access_token was signed with a different api id', function(done) {
+        this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNDc4NzA2NDgwLCJleHAiOjE0Nzg3MTAwODAsImF1ZCI6IjEyMyIsInN1YiI6IjE2NGFhNmE2LTBmMDYtNDM2Ny1iZjFhLTNjMTk5ZjBmOWVmY3x0cmFkaXRpb25hbCJ9.sC76iWq8RJN11M9xRQ0TgSh9pCMSCJNh5BBLfXqlU14';
 
         let proxy = this.makeProxy('secret');
 
@@ -113,7 +114,7 @@ describe('authorizer', function() {
             testHelper.check(done, () => {
                 assert.equal(err, 'Unauthorized');
                 assert.equal(data.name, 'JsonWebTokenError');
-                assert.equal(data.message, 'jwt audience invalid. expected: 12345');
+                assert.equal(data.message, 'invalid signature');
             });
         });  
     });
@@ -129,8 +130,7 @@ describe('authorizer', function() {
         */
 
         //setup
-        this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NzE0NjUwOTAsImV4cCI6MjY1MzM0NDAwLCJhdWQiOiIxMjM0NSJ9.zzCVcGQzkZdn3z5POuXR4tSEVV1O4LxzcxFusg4qN0o';
-        this.event.methodArn = 'arn:aws:execute-api:us-east-1:665342856034:rp8p7288o0/*/GET/session';
+        this.event.authorizationToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NzE0NjUwOTAsImV4cCI6MjY1MzM0NDAwLCJhdWQiOiIxMjM0NSJ9.zzCVcGQzkZdn3z5POuXR4tSEVV1O4LxzcxFusg4qN0o';        
 
         let proxy = this.makeProxy('secret');
 
@@ -143,7 +143,7 @@ describe('authorizer', function() {
             });
         });   
     });
-
+/*
     it(`should fail when ${constants.CLIENT_ID_HEADER} is not in the header`, function(done) {
         //setup
         this.event.headers = {};
@@ -159,4 +159,5 @@ describe('authorizer', function() {
         });
 
     });
+*/
 });

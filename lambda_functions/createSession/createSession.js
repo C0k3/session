@@ -16,11 +16,12 @@ module.exports = function(event, context, cb) {
     }
 
     let clientId = event.headers[constants.CLIENT_ID_HEADER];
+    let apiId = event.requestContext.apiId;
 
     if (body.account_type === 'traditional') {
         db.getUser(body)
             .then(user => {
-                let tokens = createTokens(user.Id, clientId);
+                let tokens = createTokens(user.Id, clientId, apiId);
                 //calculate seconds until expiration
                 let at_expiresIn = jwt.decode(tokens.access_token).exp - Math.floor(Date.now() / 1000);
 
@@ -54,8 +55,8 @@ module.exports = function(event, context, cb) {
     }
 };
 
-function createTokens(userId, clientId) {
-    let clientSecret = secrets.clientIdDigest(clientId);
+function createTokens(userId, clientId, apiId) {
+    let clientSecret = secrets.apiIdDigest(apiId);
     let tokenOptions = (expiresIn) => {
         return {
             expiresIn: expiresIn,

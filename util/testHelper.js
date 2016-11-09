@@ -15,6 +15,7 @@ module.exports = {
         event.headers = {};
         event.headers[constants.CLIENT_ID_HEADER] = '12345';
         event.body = body ? JSON.stringify(body) : '{}';
+        event.requestContext = { apiId: 'arn:aws:execute-api:us-east-1:9999999999999:12345zzzzz/*/GET/session' }
         return event;
     },
     mockLog: {
