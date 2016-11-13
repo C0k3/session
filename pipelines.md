@@ -19,3 +19,4 @@
               - "*.yml"
               - "*.yaml"
           stages: *stages
+1. The new pipeline will be added to the Go-CD server when the updated pipelines.gocd.yaml file is pushed to the repository.
