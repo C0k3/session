@@ -50,7 +50,7 @@ describe('createSession', function() {
         this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
-                expect(this.dbMock.getUser.calledOnce);
+                assert(this.dbMock.getUser.calledOnce);
             });
         });
     });
@@ -60,7 +60,7 @@ describe('createSession', function() {
         this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
-                expect(this.dbMock.saveTokens.calledOnce);
+                assert(this.dbMock.saveTokens.calledOnce);
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(200);
                 expect(body.access_token).to.not.be.null;

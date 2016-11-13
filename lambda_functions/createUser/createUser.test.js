@@ -139,7 +139,7 @@ describe('createUser', function() {
         this.createUser({Id: '1'})(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
-                expect(this.dbMock.getUser.calledOnce);
+                expect(this.dbMock.getUser.calledOnce).is.true;
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(200);
                 expect(body.message).to.equal('user already exists');
@@ -153,7 +153,7 @@ describe('createUser', function() {
         //TODO: look into this, if I pass in a user, this test still passes (it shouldn't)
         this.createUser()(event, {}, (err, data) => {
             testHelper.check(done, () => {
-                expect(this.dbMock.saveUser.calledOnce);
+                expect(this.dbMock.saveUser.calledOnce).is.true;
             });
         });
     });
