@@ -42,12 +42,6 @@ functions:
       - http:
           path: ping
           method: get
-  myTest:
-    handler: handler.myTest
-    events:
-      - http:
-          path: myTest
-          method: get
   getSession:
     handler: handler.getSession
     events:
