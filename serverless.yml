@@ -78,6 +78,16 @@ functions:
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
               identitySource: method.request.header.x-koms-clientid
+  getUser:
+    handler: handler.getUser
+    events:
+        - http:
+            path: user
+            method: GET
+            authorizer: 
+              name: authorizer
+              resultTtlInSeconds: 3
+              identitySource: method.request.header.Authorization
   authorizer:
     handler: handler.authorizer
   clientIdAuthorizer:

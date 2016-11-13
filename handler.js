@@ -40,6 +40,11 @@ module.exports.createUser = (event, context, cb) => {
     require('./lambda_functions/createUser/createUser')(event, context, cb);
 };
 
+module.exports.getUser = (event, context, cb) => {
+    setEnvVars(event.requestContext);
+    require('./lambda_functions/getUser/getUser')(event, context, cb);
+};
+
 function setEnvVars(requestContext) {
     process.env.NODE_ENV = requestContext.stage;
     //set any additional env vars here
