@@ -92,7 +92,5 @@ describe('createSession', function() {
                 expect(body.message).to.equal('user not found');
             });
         });
-
     });
-
 });
