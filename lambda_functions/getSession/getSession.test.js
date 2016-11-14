@@ -22,7 +22,7 @@ describe('getSession', function() {
         //setup
         let d = new Date();
         d.setFullYear(d.getFullYear() + 1);
-        var expiration = Math.floor(d / 1000);
+        let expiration = Math.floor(d / 1000);
         let token = jwt.sign({}, 'secret', { expiresIn: expiration });
 
         let headers = {};
