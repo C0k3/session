@@ -6,6 +6,7 @@ var constants = require('../../lib/constants');
 var secrets = require('../../lib/secrets');
 var jwt = require('jsonwebtoken');
 var token = require('../../lib/token');
+var config = require(`../../config/${process.env.NODE_ENV}.json`);
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);
@@ -63,7 +64,7 @@ module.exports = function(event, context, cb) {
 
 function createTokens(userId, clientId, apiId) {
     return {
-        refresh_token: token.createRefreshToken(userId, clientId, apiId),
-        access_token: token.createAccessToken(userId, clientId, apiId)
+        refresh_token: token.createRefreshToken(userId, clientId, apiId, config.RefreshTokenExpiration),
+        access_token: token.createAccessToken(userId, clientId, apiId, config.AccessTokenExpiration)
     };
 }

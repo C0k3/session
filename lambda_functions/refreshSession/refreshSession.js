@@ -8,7 +8,7 @@ var secrets = require('../../lib/secrets');
 var token = require('../../lib/token');
 var authorization = require('../../lib/authorization');
 var constants = require('../../lib/constants');
-
+var config = require(`../../config/${process.env.NODE_ENV}.json`);
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);
@@ -37,7 +37,7 @@ module.exports = function(event, context, cb) {
                             .then(expiration => {
                                 if(expiration) {
                                     let userId = jwt.decode(body.refresh_token).sub;
-                                    let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId);
+                                    let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId, config.AccessTokenExpiration);
 
                                     db.getTokens(body.refresh_token)
                                         .then(item => {
@@ -46,7 +46,7 @@ module.exports = function(event, context, cb) {
                                                     message: 'session no longer exists'
                                                 }, true));
                                             }
-                                            
+
                                             db.saveTokens(body.refresh_token, access_token, userId, clientId)
                                                 .then(() => {
                                                     return cb(null, response.create(200,
@@ -67,7 +67,7 @@ module.exports = function(event, context, cb) {
                                         });
 
                                 } else {
-                                    log.info(`expired refresh_token: ${body.refresh_token}`)
+                                    log.info(`expired refresh_token: ${body.refresh_token}`);
                                     cb(null, response.create(401, {
                                         message: 'refresh_token is expired'
                                     }));

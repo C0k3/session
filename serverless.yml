@@ -62,6 +62,16 @@ functions:
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
               identitySource: method.request.header.x-koms-clientid
+  refreshSession:
+    handler: handler.refreshSession
+    events:
+        - http:
+            path: session
+            method: PUT
+            authorizer:
+              name: clientIdAuthorizer
+              resultTtlInSeconds: 300
+              identitySource: method.request.header.x-koms-clientid
   createUser:
     handler: handler.createUser
     events:

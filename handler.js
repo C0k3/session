@@ -35,6 +35,11 @@ module.exports.createSession = (event, context, cb) => {
     require('./lambda_functions/createSession/createSession')(event, context, cb);
 };
 
+module.exports.refreshSession = (event, context, cb) => {
+    setEnvVars(event.requestContext);
+    require('./lambda_functions/refreshSession/refreshSession')(event, context, cb);
+};
+
 module.exports.createUser = (event, context, cb) => {
     setEnvVars(event.requestContext);
     require('./lambda_functions/createUser/createUser')(event, context, cb);
