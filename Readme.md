@@ -25,7 +25,7 @@ The [Go.cd server](https://www.go.cd/) defines a per-function pipeline for autom
 
 ##Unit testing, static analysis, and code coverage
 
-[Gulp](http://gulpjs.com/) is our task-runner of choice; test and lint tasks are defined in [gulpfile.js](gulpfile.js). We've also defined a pre-commit [git hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that will execute these test and lint tasks using the [git-guppy](https://www.npmjs.com/package/git-guppy) and [guppy-pre-commit](https://www.npmjs.com/package/git-guppy-pre-commit-hook) packages. The pre-commit hook will be created on ```npm intsall```.
+[Gulp](http://gulpjs.com/) is our task-runner of choice; test and lint tasks are defined in [gulpfile.js](gulpfile.js). We've also defined a pre-commit [git hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that will execute these test and lint tasks on ```git commit``` using the [git-guppy](https://www.npmjs.com/package/git-guppy) and [guppy-pre-commit](https://www.npmjs.com/package/git-guppy-pre-commit-hook) packages. The pre-commit hook will be created on ```npm intsall```.
 
 The following libraries and packages are used for executing tests:
 
