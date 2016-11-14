@@ -36,5 +36,5 @@ The following libraries and packages are used for executing tests:
 
 Unit tests live in the same directory as the code that they are testing and follow a *.test.js convention. The [createSession.test.js](lambda_functions/createSession/createSession.test.js) file is a good example to reference.
 
-[JSHint](http://jshint.com/docs/) is used for linting/static code analysis and [insanbul](https://www.npmjs.com/package/istanbul) provides code coverege, with help from the [nyc](https://www.npmjs.com/package/nyc) command-line tool (used by the build server for pipeline deployments).
+[JSHint](http://jshint.com/docs/) is used for linting/static code analysis and [insanbul](https://www.npmjs.com/package/istanbul) provides code coverege, with help from the [nyc](https://www.npmjs.com/package/nyc) command-line tool (used by the build server to run code coverage during pipeline deployments).
 
