@@ -35,6 +35,10 @@ describe('getUser', function() {
             });
     });
 
+    afterEach(function() {
+        this.sinon.restore();
+    });
+
     it('should parse Authorization header', function(done) {
         this.getUser(this.event, {}, (err, data) => {
             testHelper.check(done, () => {                
@@ -62,9 +66,5 @@ describe('getUser', function() {
                 expect(body).to.deep.equal({ id: this.user.Id, email: this.user.Email });
             });
         });
-    });
-
-    afterEach(function() {
-        this.sinon.restore();
     });
 });
