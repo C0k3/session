@@ -1,6 +1,6 @@
 //https://github.com/jshint/jshint/blob/master/examples/.jshintrc
 {
-	"node"         : true,
-	"mocha"        : true,
-	"esversion"    : 6
+    "node"         : true,
+    "mocha"        : true,
+    "esversion"    : 6
 }
