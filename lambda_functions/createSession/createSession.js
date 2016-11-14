@@ -5,7 +5,7 @@ var log = require('../../lib/log');
 var constants = require('../../lib/constants');
 var secrets = require('../../lib/secrets');
 var jwt = require('jsonwebtoken');
-var config = require(`../../config/${process.env.NODE_ENV}.json`); 
+var token = require('../../lib/token');
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);
@@ -62,17 +62,8 @@ module.exports = function(event, context, cb) {
 };
 
 function createTokens(userId, clientId, apiId) {
-    let apiSecret = secrets.apiIdDigest(apiId);
-    let tokenOptions = (expiresIn) => {
-        return {
-            expiresIn: expiresIn,
-            subject: userId, 
-            audience: clientId
-        };
-    };
-
     return {
-        refresh_token: jwt.sign({ type: 'refresh' }, apiSecret, tokenOptions(config.RefreshTokenExpiration)),
-        access_token: jwt.sign({ type: 'access' }, apiSecret, tokenOptions(config.AccessTokenExpiration))
+        refresh_token: token.createRefreshToken(userId, clientId, apiId),
+        access_token: token.createAccessToken(userId, clientId, apiId)
     };
 }
