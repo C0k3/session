@@ -23,19 +23,19 @@ module.exports = function(event, context, cb) {
     let clientId = authorization.checkClientId(event.headers[constants.CLIENT_ID_HEADER]);
     token.parseAuthorizationHeader(event.headers.Authorization)
         .then(parsedToken => {
-            token.getExpiration(parsedToken, secret)
-                .then(expiration => {
-                    if(expiration) {
+            token.getTimeRemaining(parsedToken, secret)
+                .then(at_timeRemaining => {                    
+                    if(at_timeRemaining) {
                         return cb(null, response.create(200,
                         {   
                             access_token: parsedToken,
                             refresh_token: body.refresh_token,
-                            access_token_expires_in: expiration
+                            access_token_expires_in: at_timeRemaining
                         }, true));
                     } else {
-                        token.getExpiration(body.refresh_token, secret)
-                            .then(expiration => {
-                                if(expiration) {
+                        token.getTimeRemaining(body.refresh_token, secret)
+                            .then(rt_timeRemaining => {
+                                if(rt_timeRemaining) {
                                     let userId = jwt.decode(body.refresh_token).sub;
                                     let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId, config.AccessTokenExpiration);
 

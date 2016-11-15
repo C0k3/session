@@ -28,6 +28,8 @@ module.exports = function(event, context, cb) {
                     }, true));
                 }
 
+                //TODO: check Tokens table to see if there is already a current session before creating a new one - use user.Id
+
                 let tokens = createTokens(user.Id, clientId, apiId);
                 //calculate seconds until expiration
                 let at_expiresIn = jwt.decode(tokens.access_token).exp - Math.floor(Date.now() / 1000);
