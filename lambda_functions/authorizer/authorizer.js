@@ -17,6 +17,9 @@ module.exports = function(event, context, cb) {
 
     token.parseAuthorizationHeader(event.authorizationToken)
         .then(parsedToken => {
+
+            //TODO: query DynamoDB with access_token to ensure that the session hasn't been deleted
+            
             let decoded = {};
             try {
                 //this will throw an invalid signature if the wrong secret were used to sign the request OR if the token has expired

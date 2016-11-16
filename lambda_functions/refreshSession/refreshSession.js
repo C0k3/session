@@ -18,9 +18,17 @@ module.exports = function(event, context, cb) {
         }));
     }
 
-    //TODO: nested promises need some cleanup
     let secret = secrets.apiIdDigest(event.requestContext.apiId);
-    let clientId = authorization.checkClientId(event.headers[constants.CLIENT_ID_HEADER]);
+    let clientId = '';
+    try {
+        clientId = authorization.checkClientId(event.headers[constants.CLIENT_ID_HEADER]);
+    } catch(err) {
+        return cb(null, response.create(500, {
+            message: err.message
+        }));
+    }
+
+    //TODO: nested promises need some cleanup
     token.parseAuthorizationHeader(event.headers.Authorization)
         .then(parsedToken => {
             token.getTimeRemaining(parsedToken, secret)
@@ -40,7 +48,7 @@ module.exports = function(event, context, cb) {
                                     let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId, config.AccessTokenExpiration);
 
                                     db.getTokens(body.refresh_token)
-                                        .then(item => {
+                                        .then(item => {                                            
                                             if (!item) {
                                                 return cb(null, response.create(401, {
                                                     message: 'session no longer exists'
