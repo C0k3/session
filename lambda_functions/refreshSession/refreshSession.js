@@ -24,7 +24,7 @@ module.exports = function(event, context, cb) {
     token.parseAuthorizationHeader(event.headers.Authorization)
         .then(parsedToken => {
             token.getTimeRemaining(parsedToken, secret)
-                .then(at_timeRemaining => {                    
+                .then(at_timeRemaining => {           
                     if(at_timeRemaining) {
                         return cb(null, response.create(200,
                         {   
@@ -44,6 +44,12 @@ module.exports = function(event, context, cb) {
                                             if (!item) {
                                                 return cb(null, response.create(401, {
                                                     message: 'session no longer exists'
+                                                }));
+                                            }
+
+                                            if(parsedToken !== item.AccessToken) {
+                                                return cb(null, response.create(401, {
+                                                    message: 'can only refresh most recently expired access token'
                                                 }));
                                             }
 
