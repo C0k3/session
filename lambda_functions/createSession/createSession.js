@@ -13,7 +13,7 @@ module.exports = function(event, context, cb) {
     if (!body.account_type) {
         return cb(null, response.create(500, {
             message: 'missing account_type in request'
-        }, true));
+        }));
     }
 
     let clientId = event.headers[constants.CLIENT_ID_HEADER];
@@ -25,7 +25,7 @@ module.exports = function(event, context, cb) {
                 if(!user) {
                     return cb(null, response.create(500, {
                         message: 'user not found'
-                    }, true));
+                    }));
                 }
 
                 //TODO: check Tokens table to see if there is already a current session before creating a new one - use user.Id
@@ -43,7 +43,7 @@ module.exports = function(event, context, cb) {
                         access_token: tokens.access_token,
                         refresh_token: tokens.refresh_token,
                         access_token_expires_in: at_expiresIn
-                    }, true));
+                    }));
                 })
                 .catch(err => {
                     log.error(err);
@@ -60,7 +60,7 @@ module.exports = function(event, context, cb) {
     } else {
         return cb(null, response.create(500, {
             message: 'unsupported account_type'
-        }, true));
+        }));
     }
 };
 

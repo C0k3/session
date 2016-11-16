@@ -14,7 +14,7 @@ module.exports = function(event, context, cb) {
                     cb(null, response.create(200, {
                         id: user.Id,
                         email: user.Email
-                    }), true);
+                    }));
                 })
                 .catch(err => {
                     log.error(err);
@@ -27,6 +27,6 @@ module.exports = function(event, context, cb) {
             {
                 name: err.name,
                 message: err.message
-            }), true);
+            }));
         });
 };

@@ -16,22 +16,22 @@ module.exports = function(event, context, cb) {
                 log.error(err);
                 return cb(null, response.create(500, {
                     message:'Error in getting access_token Expiration date' 
-                }, true));
+                }));
             } 
 
             if(at_expiresIn <= 0) {
                 log.info('received expired token');
                 return cb(null, response.create(401, {
                         message : 'access_token expired'                    
-                    }, true));
+                    }));
 
             } else {    
-                return cb(null, response.create(200, { access_token_expires_in: at_expiresIn }, true));
+                return cb(null, response.create(200, { access_token_expires_in: at_expiresIn }));
             }        
         })
         .catch(err => {
             return cb(null, response.create(500, {
                         message : err.message
-                    }, true));
+                    }));
         });    
 };

@@ -31,7 +31,7 @@ module.exports = function(event, context, cb) {
                             access_token: parsedToken,
                             refresh_token: body.refresh_token,
                             access_token_expires_in: at_timeRemaining
-                        }, true));
+                        }));
                     } else {
                         token.getTimeRemaining(body.refresh_token, secret)
                             .then(rt_timeRemaining => {
@@ -44,7 +44,7 @@ module.exports = function(event, context, cb) {
                                             if (!item) {
                                                 return cb(null, response.create(401, {
                                                     message: 'session no longer exists'
-                                                }, true));
+                                                }));
                                             }
 
                                             db.saveTokens(body.refresh_token, access_token, userId, clientId)
@@ -54,7 +54,7 @@ module.exports = function(event, context, cb) {
                                                         access_token: access_token,
                                                         refresh_token: body.refresh_token,
                                                         access_token_expires_in: jwt.decode(access_token).exp - Math.floor(Date.now() / 1000)
-                                                    }, true));
+                                                    }));
                                                 })
                                                 .catch(err => {
                                                     log.error(err);
@@ -90,6 +90,6 @@ module.exports = function(event, context, cb) {
             {
                 name: err.name,
                 message: err.message
-            }, true));
+            }));
         });
 };

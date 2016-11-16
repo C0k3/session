@@ -14,7 +14,7 @@ module.exports = function(event, context, cb) {
             return cb(null, response.create(500, {
                 name: 'InvalidEmailOrPassword', //DRY: consider using a shared error type
                 message: 'The email or password was not provided'
-            }, true));
+            }));
         }
 
         //thanks: https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
@@ -23,7 +23,7 @@ module.exports = function(event, context, cb) {
             return cb(null, response.create(500, {
                 name: 'InvalidEmailOrPassword',
                 message: 'Weak password strength'
-            }, true));
+            }));
         }
 
         //this: https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
@@ -32,7 +32,7 @@ module.exports = function(event, context, cb) {
             return cb(null, response.create(500, {
                 name: 'InvalidEmailOrPassword',
                 message: 'Invalid email format'
-            }, true));
+            }));
         }
 
         db.getUser(body)
@@ -40,14 +40,14 @@ module.exports = function(event, context, cb) {
                 if(user.Id) {
                     return cb(null, response.create(200, {
                             message: 'user already exists' 
-                        }, true));
+                        }));
                 }
                 
                 db.saveUser(body, event.headers[constants.CLIENT_ID_HEADER])
                     .then(() => {
                         return cb(null, response.create(200, {
                             message: 'new user created' 
-                        }, true));
+                        }));
                     })
                     .catch(err => {
                         log.error(err);
