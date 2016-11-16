@@ -28,7 +28,10 @@ module.exports = function(event, context, cb) {
         }));
     }
 
-    //TODO: nested promises need some cleanup
+    //TODO: nested promises need some cleanup - maybe bluebird:
+    //Promise.join(token.getTimeRemaining(parsedToken, secret), token.getTimeRemaining(body.refresh_token, secret),
+    //          (at_timeRemaining, rt_timeRemaining) => { })
+    //see: http://bluebirdjs.com/docs/api/promise.join.html
     token.parseAuthorizationHeader(event.headers.Authorization)
         .then(parsedToken => {
             token.getTimeRemaining(parsedToken, secret)
