@@ -79,9 +79,9 @@ functions:
             path: session
             method: DELETE
             authorizer: 
-              name: authorizer
-              resultTtlInSeconds: 3
-              identitySource: method.request.header.Authorization
+              name: clientIdAuthorizer
+              resultTtlInSeconds: 300
+              identitySource: method.request.header.x-koms-clientid
   createUser:
     handler: handler.createUser
     events:

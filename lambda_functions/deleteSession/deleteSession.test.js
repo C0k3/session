@@ -16,7 +16,7 @@ describe('deleteSession', function() {
         this.deleteSession = proxyquire('./deleteSession', {
             '../../lib/log': testHelper.mockLog,
             '../../lib/db': this.dbMock
-        })
+        });
     });
 
     afterEach(function() {
@@ -30,7 +30,7 @@ describe('deleteSession', function() {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 assert(this.dbMock.deleteTokens.calledOnce, 'db.deleteTokens must be called');
-                assert(this.dbMock.deleteTokens.calledWith(rt))
+                assert(this.dbMock.deleteTokens.calledWith(rt));
                 expect(err).is.null;
                 expect(data.statusCode).to.equal(200);
                 expect(body.message).to.equal('session ended');

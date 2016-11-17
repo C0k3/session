@@ -31,6 +31,26 @@ describe('refreshSession', function() {
             return event;
         };
 
+        this.createDbMock = (event) => {
+            let access_token = event.headers[constants.AUTHORIZATION_HEADER].split(' ')[1];
+            let eventBody = JSON.parse(event.body);  
+            let refresh_token = eventBody.refresh_token;
+            let dbMock = {
+                getTokens: () => Promise.resolve({
+                    AccessToken: access_token,
+                    IssuedAt: jwt.decode(refresh_token).iat,
+                    SessionCreatedAt: jwt.decode(refresh_token).iat,
+                    ExpiresAt: jwt.decode(refresh_token).exp,
+                    ClientId: this.clientId,
+                    RefreshToken: refresh_token,
+                    PrincipalId: this.userId
+                }),
+                saveTokens: () => Promise.resolve()
+            };
+
+            return dbMock;
+        }
+
         this.refreshToken = (dbMock) => { 
             return proxyquire('./refreshSession', {
                 '../../lib/log': testHelper.mockLog,
@@ -47,7 +67,7 @@ describe('refreshSession', function() {
         let event = this.createEvent(true, true);
         let eventBody = JSON.parse(event.body);
         let access_token = event.headers[constants.AUTHORIZATION_HEADER].split(' ')[1];
-        this.refreshToken()(event, {}, (err, data) => {
+        this.refreshToken(this.createDbMock(event))(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
@@ -61,23 +81,10 @@ describe('refreshSession', function() {
 
     it('should create new access_token if current access_token is expired', function(done) {        
         let event = this.createEvent(false, true);
-        let eventBody = JSON.parse(event.body);        
+        let eventBody = JSON.parse(event.body);
         let access_token = event.headers[constants.AUTHORIZATION_HEADER].split(' ')[1];
-        let refresh_token = eventBody.refresh_token;
-        let dbMock = {
-            getTokens: () => Promise.resolve({
-                AccessToken: access_token,
-                IssuedAt: jwt.decode(refresh_token).iat,
-                SessionCreatedAt: jwt.decode(refresh_token).iat,
-                ExpiresAt: jwt.decode(refresh_token).exp,
-                ClientId: this.clientId,
-                RefreshToken: refresh_token,
-                PrincipalId: this.userId
-            }),
-            saveTokens: () => Promise.resolve()
-        };
 
-        this.refreshToken(dbMock)(event, {}, (err, data) => {
+        this.refreshToken(this.createDbMock(event))(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
@@ -146,7 +153,7 @@ describe('refreshSession', function() {
 
     it('should return 401 for expired refresh_token', function(done) {
         let event = this.createEvent(false, false);
-        this.refreshToken()(event, {}, (err, data) => {
+        this.refreshToken(this.createDbMock(event))(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
                 expect(err).to.be.null;
@@ -168,5 +175,4 @@ describe('refreshSession', function() {
             });
         });
     });
-
 });

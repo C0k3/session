@@ -21,5 +21,5 @@ module.exports = function(event, context, cb) {
     .catch(err => {
         log.error(log);
         cb(null, response.genericError());
-    })
+    });
 };
