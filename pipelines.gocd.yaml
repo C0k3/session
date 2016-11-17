@@ -1,60 +1,59 @@
-pipelines:
-  authorizer:
-    group: lambda
-    label_template: "${authorizer[:8]}"
-    environment_variables:
-      FUNCTION_NAME: authorizer
-    materials:
-      authorizer:
-        git: https://github.com/C0k3/session
-        branch: development
-        whitelist:
-        - lambda_functions/authorizer/**/*.*
-        - "*.js"
-        - "*.json"
-        - "*.opts"
-        - "*.yml"
-        - "*.yaml"
-    stages: &functionStages
-      - unit-testing:
-          clean_workspace: true
-          environment_variables:
-            NODE_ENV: development
-          artifacts:
-          - test:
-              source: test-results.xml
-              destination: test-reports/
-          tasks:
+pipelines: # Container for all pipelines defiend in this file. Each pipeline is an individual Lambda function
+  authorizer: # The name of the lambda function is used for several things. In this case, it is used as the name of an individual pipeline instance
+    group: lambda # Pipelines are grouped in the Go UI. This deintes that this pipeline should be grouped in the UI into a group called lambda
+    label_template: "${authorizer[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
+    environment_variables: # A contianer for environment variables that are scoped at the pipeline level. These can be overridden at lower levels
+      FUNCTION_NAME: authorizer # This environment variable allows the stages of this pipeline to be used as a template for other pipelines. The env variable is used in Lint, unit tests, and deployment actions
+    materials: # These define all sources to the pipepeline. In affect any items defined here Go will poll and look for any changes to in the source.
+      authorizer: # The name of an individual source
+        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
+        branch: development # Which branch to look for changes
+        whitelist: # Out of all the files in the repo, only files that match these patterns will trigger a change to the repo
+        - lambda_functions/authorizer/**/*.* # Only artifcats for the authorizer lambda should be matched
+        - "*.js" # Any changes to shared .js files in the root directory should trigger the pipeline
+        - "*.json" # Any changes to shared .json files in the root directory should trigger the pipeline
+        - "*.yml" # Any changes to shared .yml files in the root directory should trigger the pipeline
+        - "*.yaml" # Any changes to shared .yaml files in the root directory should trigger the pipeline
+    stages: &functionStages # This line 1) declares an ordered contianer for all stages in this pipeline and 2) Creates a reference to those stages so that other pipelines can re-use them.
+      - unit-testing: # Declares stage called "unit-testing"
+          clean_workspace: true # Remove all files/directories in the working directory
+          environment_variables: # Define environment variables specifically for the "unit-testing" stage
+            NODE_ENV: development # Defining NODE_ENV to development ensures that devDependencies will be installed defined in package.json
+          artifacts: # Defines outputs of this stage
+          - test: # Lets Go know that the artifact is an XML file in JUnit format that can be parsed and displayed within the Go UI.
+              source: test-results.xml # The output of the task defined in the stage
+              destination: test-reports/ # Where any other pipelines want to reference it
+          tasks: # Defines all tasks of the stage. This task runs a bash script that first installes npm dependencies and then run the gulp unit tests based on a particular lambda.
           - script: |
-              npm install
+              npm install 
               node_modules/.bin/gulp test -f $FUNCTION_NAME
-      - lint:
+      - lint: # Declares stage called "lint"
           clean_workspace: true
           environment_variables:
             NODE_ENV: development
           artifacts:
-          - build:
+          - build: # Tells Go to store this file. This file is needed to show the HTML in the Go GUI.
               source: jshint.html
-          tabs:
-            lint: jshint.html
-          tasks:
+          tabs: # Tells Go to add custom tabs in the UI
+            lint: jshint.html # The contents of this HTMl will be shown in the custom tab in the Go UI
+          tasks: # Lint the source for a specific lambda
           - script: |
               touch jshint.html
               npm install
               node_modules/.bin/gulp lint -f $FUNCTION_NAME
               true
-      - code-coverage:
+      - code-coverage: # Declares stage called "code-coverage"
           clean_workspace: true
           environment_variables:
             NODE_ENV: test
-            COV_LINES: 1
-            COV_FUNCTIONS: 1
-            COV_BRANCHES: 1
+            COV_LINES: 1 # Used by the second task in this stage to fail if this percentage of lines that are covered by unit tests are less than what is defined here
+            COV_FUNCTIONS: 1 # Used by the second task in this stage to fail if this percentage of functions that are covered by unit tests are less than what is defined here
+            COV_BRANCHES: 1 # Used by the second task in this stage to fail if this percentage of code branches that are covered by unit tests are less than what is defined here
           artifacts:
           - build:
-              source: coverage
+              source: coverage # Let all of the contents of the coverage directory be used by the custom tabs defined in thsi stage
           tabs:
-            code-coverage: coverage/index.html
+            code-coverage: coverage/index.html # The contents fo this file will be shown in a tab called "code-coverage"
           tasks:
           - script: |
               npm install
@@ -64,7 +63,7 @@ pipelines:
               node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
       - test-deploy:
           clean_workspace: true
-          tasks:
+          tasks: # If all previous stages passed then use environment variables defined in gitPassword to rebase the test-deploy branch off of the development branch
           - script: |
               source /etc/gitPassword
               git checkout test-deploy
@@ -72,23 +71,22 @@ pipelines:
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
       - deploy-dev:
           clean_workspace: true
-          tasks:
+          tasks: # deploy the lambda function to the "dev" stage
           - script: |
               npm install . --production
-              npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage dev
       - deploy-test:
           clean_workspace: true
           approval:
-            type: manual          
-          tasks:
+            type: manual # Require someone in the UI to manually approve the execution of this stage
+          tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
           - script: |
               git checkout test-deploy
               git pull
               npm install . --production
               npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage test
-  getSession:
+  getSession: # Define a new Pipeline for a specific lambda
     group: lambda
     label_template: "${getSession[:8]}"
     environment_variables:
@@ -104,7 +102,7 @@ pipelines:
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages: *functionStages
+    stages: *functionStages # This allows all of the stages defined above to be re-used for this pipeline
   createUser:
     group: lambda
     label_template: "${createUser[:8]}"
