@@ -1,6 +1,6 @@
 pipelines: # Container for all pipelines defiend in this file. Each pipeline is an individual Lambda function
   authorizer: # The name of the lambda function is used for several things. In this case, it is used as the name of an individual pipeline instance
-    group: lambda # Pipelines are grouped in the Go UI. This deintes that this pipeline should be grouped in the UI into a group called lambda
+    group: session # Pipelines are grouped in the Go UI. This deintes that this pipeline should be grouped in the UI into a group called lambda
     label_template: "${authorizer[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
     environment_variables: # A contianer for environment variables that are scoped at the pipeline level. These can be overridden at lower levels
       FUNCTION_NAME: authorizer # This environment variable allows the stages of this pipeline to be used as a template for other pipelines. The env variable is used in Lint, unit tests, and deployment actions
@@ -87,7 +87,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
               npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage test
   clientIdAuthorizer: # Define a new Pipeline for a specific lambda
-    group: lambda
+    group: session
     label_template: "${clientIdAuthorizer[:8]}"
     environment_variables:
       FUNCTION_NAME: clientIdAuthorizer
@@ -104,7 +104,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages # This allows all of the stages defined above to be re-used for this pipeline
   createSession:
-    group: lambda
+    group: session
     label_template: "${createSession[:8]}"
     environment_variables:
       FUNCTION_NAME: createSession
@@ -121,7 +121,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages
   getSession:
-    group: lambda
+    group: session
     label_template: "${getSession[:8]}"
     environment_variables:
       FUNCTION_NAME: getSession
@@ -138,7 +138,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages
   refreshSession:
-    group: lambda
+    group: session
     label_template: "${refreshSession[:8]}"
     environment_variables:
       FUNCTION_NAME: refreshSession
@@ -155,7 +155,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages
   deleteSession:
-    group: lambda
+    group: session
     label_template: "${deleteSession[:8]}"
     environment_variables:
       FUNCTION_NAME: deleteSession
@@ -172,7 +172,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages
   createUser:
-    group: lambda
+    group: session
     label_template: "${createUser[:8]}"
     environment_variables:
       FUNCTION_NAME: createUser
@@ -189,7 +189,7 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.yaml"
     stages: *functionStages
   getUser:
-    group: lambda
+    group: session
     label_template: "${getUser[:8]}"
     environment_variables:
       FUNCTION_NAME: getUser
