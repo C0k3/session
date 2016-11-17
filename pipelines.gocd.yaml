@@ -86,7 +86,41 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
               npm install . --production
               npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage test
-  getSession: # Define a new Pipeline for a specific lambda
+  clientIdAuthorizer: # Define a new Pipeline for a specific lambda
+    group: lambda
+    label_template: "${clientIdAuthorizer[:8]}"
+    environment_variables:
+      FUNCTION_NAME: clientIdAuthorizer
+    materials:
+      clientIdAuthorizer:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/clientIdAuthorizer/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *functionStages # This allows all of the stages defined above to be re-used for this pipeline
+  createSession:
+    group: lambda
+    label_template: "${createSession[:8]}"
+    environment_variables:
+      FUNCTION_NAME: createSession
+    materials:
+      createSession:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/createSession/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *functionStages
+  getSession:
     group: lambda
     label_template: "${getSession[:8]}"
     environment_variables:
@@ -102,7 +136,41 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         - "*.opts"
         - "*.yml"
         - "*.yaml"
-    stages: *functionStages # This allows all of the stages defined above to be re-used for this pipeline
+    stages: *functionStages
+  refreshSession:
+    group: lambda
+    label_template: "${refreshSession[:8]}"
+    environment_variables:
+      FUNCTION_NAME: refreshSession
+    materials:
+      refreshSession:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/refreshSession/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *functionStages
+  deleteSession:
+    group: lambda
+    label_template: "${deleteSession[:8]}"
+    environment_variables:
+      FUNCTION_NAME: deleteSession
+    materials:
+      deleteSession:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/deleteSession/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *functionStages
   createUser:
     group: lambda
     label_template: "${createUser[:8]}"
@@ -114,6 +182,23 @@ pipelines: # Container for all pipelines defiend in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/createUser/**/*.*
+        - "*.js"
+        - "*.json"
+        - "*.opts"
+        - "*.yml"
+        - "*.yaml"
+    stages: *functionStages
+  getUser:
+    group: lambda
+    label_template: "${getUser[:8]}"
+    environment_variables:
+      FUNCTION_NAME: getUser
+    materials:
+      getUser:
+        git: https://github.com/C0k3/session
+        branch: development
+        whitelist:
+        - lambda_functions/getUser/**/*.*
         - "*.js"
         - "*.json"
         - "*.opts"

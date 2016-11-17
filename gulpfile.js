@@ -35,7 +35,6 @@ gulp.task('lint', function() {
   const target = `lambda_functions/${nconf.get('f') ? nconf.get('f') + '/' : ''}**/*.js`;
 
   return gulp.src([
-    './lambda_functions/**/*.js',
   	'./handler.js',
     target,
     './lib/**/*.js',
