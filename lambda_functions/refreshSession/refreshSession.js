@@ -37,7 +37,7 @@ module.exports = function(event, context, cb) {
                     return {
                         at_timeRemaining: at_timeRemaining,
                         rt_timeRemaining: rt_timeRemaining
-                    }
+                    };
                 })
                 .then(times => {
                     db.getTokens(body.refresh_token)

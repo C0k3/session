@@ -49,7 +49,7 @@ describe('refreshSession', function() {
             };
 
             return dbMock;
-        }
+        };
 
         this.refreshToken = (dbMock) => { 
             return proxyquire('./refreshSession', {
