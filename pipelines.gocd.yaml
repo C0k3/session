@@ -1,36 +1,4 @@
 pipelines: # Container for all pipelines defined in this file. Each pipeline is an individual Lambda function
-  deploy-dev: 
-    group: session-management 
-    label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
-    materials:
-      session:
-        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
-        branch: development # Which branch to look for changes
-    stages:
-      - deploy:
-          approval:
-            type: manual
-          clean_workspace: true 
-          tasks:
-          - script: |
-              npm install --production
-              sls deploy --stage dev
-  deploy-test: 
-    group: session-management 
-    label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
-    materials:
-      session:
-        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
-        branch: development # Which branch to look for changes
-    stages:
-      - deploy:
-          approval:
-            type: manual
-          clean_workspace: true 
-          tasks:
-          - script: |
-              npm install --production
-              sls deploy --stage test
   authorizer: # The name of the lambda function is used for several things. In this case, it is used as the name of an individual pipeline instance
     group: session # Pipelines are grouped in the Go UI. This deintes that this pipeline should be grouped in the UI into a group called lambda
     label_template: "${authorizer[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
@@ -237,3 +205,35 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         - "*.yml"
         - "*.yaml"
     stages: *functionStages
+  deploy-dev: 
+    group: manual-deployment 
+    label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
+    materials:
+      session:
+        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
+        branch: development # Which branch to look for changes
+    stages:
+      - deploy:
+          approval:
+            type: manual
+          clean_workspace: true 
+          tasks:
+          - script: |
+              npm install --production
+              sls deploy --stage dev
+  deploy-test: 
+    group: manual-deployment 
+    label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
+    materials:
+      session:
+        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
+        branch: development # Which branch to look for changes
+    stages:
+      - deploy:
+          approval:
+            type: manual
+          clean_workspace: true 
+          tasks:
+          - script: |
+              npm install --production
+              sls deploy --stage test
