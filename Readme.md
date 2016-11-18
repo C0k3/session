@@ -21,7 +21,7 @@ This is an example API built with the Serverless Framework and Go.cd pipeline su
 
 ###The Go.cd build server
 
-The [Go.cd server](https://www.go.cd/) defines a per-function pipeline for automated testing, code coverage, and deployments. We're using [Tomasz Sętkowski's Go-CD Yaml Plugin](https://github.com/tomzo/gocd-yaml-config-plugin) to define all pipelines via the [pipelines.gocd.yaml](pipelines.gocd.yaml) file. More information about our pipeline definition can be found here: [Definining Lambda Pipelines](pipelines.md). An installation script for setting up your own Go.cd server can be found in the [go-serverless](https://github.com/C0k3/go-serverless) repository.
+The [Go.cd server](https://www.go.cd/) executes a per-function pipeline for automated testing, code coverage, and deployments. We're using [Tomasz Sętkowski's Go-CD Yaml Plugin](https://github.com/tomzo/gocd-yaml-config-plugin) to define all pipelines via the [pipelines.gocd.yaml](pipelines.gocd.yaml) file. More information about our pipeline definitions can be found here: [Definining Lambda Pipelines](pipelines.md). An example installation script for setting up your own Go.cd server can be found in the [go-serverless](https://github.com/C0k3/go-serverless) repository.
 
 ###Unit testing, static analysis, and code coverage
 
