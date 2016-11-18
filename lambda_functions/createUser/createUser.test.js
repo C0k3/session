@@ -19,7 +19,7 @@ describe('createUser', function() {
         this.hashSpy = this.sinon.spy(secrets.passwordDigest);
         this.dbMock = {};
 
-        this.createUser = function(user) {
+        this.createUser = user => {
             this.dbMock = {
                 getUser: this.sinon.spy(() => Promise.resolve(user ? user : {})),
                 saveUser: this.sinon.spy()
@@ -31,7 +31,7 @@ describe('createUser', function() {
                 },
                 '../../lib/db': this.dbMock
             });
-        }.bind(this);
+        };
     });
 
     afterEach(function() {

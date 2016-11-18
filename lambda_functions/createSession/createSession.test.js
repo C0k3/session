@@ -17,7 +17,7 @@ describe('createSession', function() {
             saveTokens: this.sinon.spy(() => Promise.resolve())
         };
 
-        this.createSession = function(emptyUser) {
+        this.createSession = emptyUser => {
             if (emptyUser) {
                 this.dbMock.getUser = this.sinon.spy(() => Promise.resolve(undefined));
             }
@@ -26,7 +26,7 @@ describe('createSession', function() {
                 '../../lib/log': testHelper.mockLog,
                 '../../lib/db': this.dbMock
             });
-        }.bind(this);
+        };
     });
 
     afterEach(function() {
@@ -60,7 +60,7 @@ describe('createSession', function() {
         this.createSession()(event, {}, (err, data) => {
             let body = JSON.parse(data.body);
             testHelper.check(done, () => {
-                assert(this.dbMock.saveTokens.calledOnce);
+                assert(this.dbMock.saveTokens.calledOnce, 'db.saveTokens should be called once');
                 expect(err).to.be.null;
                 expect(data.statusCode).to.equal(200);
                 expect(body.access_token).to.not.be.null;
