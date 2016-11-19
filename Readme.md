@@ -38,3 +38,25 @@ Unit tests live in the same directory as the code that they are testing and foll
 
 [JSHint](http://jshint.com/docs/) is used for linting/static code analysis and [insanbul](https://www.npmjs.com/package/istanbul) provides code coverege, with help from the [nyc](https://www.npmjs.com/package/nyc) command-line tool (used by the build server to run code coverage during pipeline deployments).
 
+##The Microservices Pattern
+
+Microservice architectures adhere to the following principles:
+
+####Resource isolation
+AWS Lambda supports resource isolation by hosting each Lambda function in its own set of containers with its own resource allocation (CPU and Memory). A Lambda function's resource allocation is defined using the "memorySize" field for that function in serverless.yml (see [docs](https://serverless.com/framework/docs/providers/aws/guide/functions/) for details).
+
+####Development and deployment segregation
+Deployments occur on a per-function basis. For example: a function supporting a particular API endpoint can be deployed independantly of functions supporting other API endpoints.
+
+The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is indenpendantly tested and deployed (while any shared code is tested across all Lambda functions). 
+
+Each Lambda function passes through 5 stages:
+
+1. unit testing
+2. linting
+3. code coverage
+4. staging for test environment deployment
+5. deployment to the development environment
+
+An additional "deploy to test" stage can be manually triggered for each function.
+
