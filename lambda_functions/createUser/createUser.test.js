@@ -21,7 +21,7 @@ describe('createUser', function() {
 
         this.createUser = user => {
             this.dbMock = {
-                getUser: this.sinon.spy(() => Promise.resolve(user ? user : {})),
+                getUser: this.sinon.spy(() => Promise.resolve(user ? user : undefined)),
                 saveUser: this.sinon.spy()
             };
             return proxyquire('./createUser', {

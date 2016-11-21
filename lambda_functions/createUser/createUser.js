@@ -37,7 +37,7 @@ module.exports = function(event, context, cb) {
 
         db.getUser(body)
             .then(user => {
-                if(user.Id) {
+                if(user) {
                     return cb(null, response.create(200, {
                             message: 'user already exists' 
                         }));
