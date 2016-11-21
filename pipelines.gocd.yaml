@@ -15,7 +15,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         - "*.yml" # Any changes to shared .yml files in the root directory should trigger the pipeline
         - "*.yaml" # Any changes to shared .yaml files in the root directory should trigger the pipeline
     stages: &functionStages # This line 1) declares an ordered contianer for all stages in this pipeline and 2) Creates a reference to those stages so that other pipelines can re-use them.
-      - unit-testing: # Declares stage called "unit-testing"
+      - unit-test: # Declares stage called "unit-testing"
           clean_workspace: true # Remove all files/directories in the working directory
           environment_variables: # Define environment variables specifically for the "unit-testing" stage
             NODE_ENV: development # Defining NODE_ENV to development ensures that devDependencies will be installed defined in package.json
@@ -61,7 +61,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               true
           - script: |
               node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
-      - test-deploy:
+      - stage-for-test:
           clean_workspace: true
           tasks: # If all previous stages passed then use environment variables defined in gitPassword to rebase the test-deploy branch off of the development branch
           - script: |
