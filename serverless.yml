@@ -22,13 +22,26 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+      Resource: "*"
+# NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
+# see: https://github.com/serverless/serverless/issues/2697
+# until this is fixed, you have to do an initial sls deploy in 2 passes:
+# 1. sls deploy with iamRoleStatements including the proper ec2 actions
+# 2. then sls deploy with vpc configs
+  vpc:
+    securityGroupIds:
+      - sg-62a98e1b      
+    subnetIds:
+      - subnet-521d1a24
+      - subnet-aade33cd
   #profile: ko-playground-admin
 
-# plugins:
-#   - create-function
 
-# custom:
-#   IamRoleArnForCreate: arn:aws:iam::665342856034:role/ko-playground-dev-iam-profile-AppSrvrRole-1NEYAB5I2WX2B
 
 package:
   exclude:
