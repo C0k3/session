@@ -23,7 +23,6 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
-
     - Effect: "Allow"
       Action:
         - "ec2:CreateNetworkInterface"
@@ -44,13 +43,6 @@ provider:
   environment:
     STAGE: ${opt:stage}
   #profile: ko-playground-admin
-
-
-
-
-  
-
-
 
 package:
   exclude:
