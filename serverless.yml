@@ -22,13 +22,9 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
+  environment:
+    STAGE: ${opt:stage}
   #profile: ko-playground-admin
-
-# plugins:
-#   - create-function
-
-# custom:
-#   IamRoleArnForCreate: arn:aws:iam::665342856034:role/ko-playground-dev-iam-profile-AppSrvrRole-1NEYAB5I2WX2B
 
 package:
   exclude:

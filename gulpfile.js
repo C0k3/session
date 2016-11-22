@@ -19,8 +19,7 @@ nconf.argv({
 
 gulp.task('test', function() {
     const envs = env.set({
-        stage: 'test',
-        NODE_ENV: 'test'
+        STAGE: 'test'
     });
     
     const target = `lambda_functions/${nconf.get('f') ? nconf.get('f') + '/' : ''}**/*.test.js`;

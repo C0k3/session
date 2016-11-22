@@ -8,7 +8,7 @@ var secrets = require('../../lib/secrets');
 var token = require('../../lib/token');
 var authorization = require('../../lib/authorization');
 var constants = require('../../lib/constants');
-var config = require(`../../config/${process.env.NODE_ENV}.json`);
+var config = require(`../../config/${process.env.STAGE}.json`);
 var bb = require('bluebird');
 
 module.exports = function(event, context, cb) {

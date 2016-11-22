@@ -6,7 +6,7 @@ var constants = require('../../lib/constants');
 var secrets = require('../../lib/secrets');
 var jwt = require('jsonwebtoken');
 var token = require('../../lib/token');
-var config = require(`../../config/${process.env.NODE_ENV}.json`);
+var config = require(`../../config/${process.env.STAGE}.json`);
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);
