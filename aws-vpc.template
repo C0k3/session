@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "This template creates a Multi-AZ, multi-subnet VPC infrastructure with managed NAT gateways in the public subnet for each Availability Zone. You can also create additional private subnets with dedicated custom network access control lists (ACLs). If you deploy the Quick Start in a region that doesn't support NAT gateways, NAT instances are deployed instead. **WARNING** This template creates AWS resources. You will be billed for the AWS resources used if you create a stack from this template. QS(0027)",
+    "Description": "This template creates a Multi-AZ, multi-subnet VPC infrastructure with managed NAT gateways in the public subnet for each Availability Zone. You can also create additional private subnets with dedicated custom network access control lists (ACLs).  **WARNING** This template creates AWS resources. You will be billed for the AWS resources used if you create a stack from this template. QS(0027). This is a modified version of the template found here: http://docs.aws.amazon.com/quickstart/latest/vpc/welcome.html",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -33,15 +33,6 @@
                         "PrivateSubnet3BCIDR",
                         "PrivateSubnet4BCIDR"
                     ]
-                },
-                {
-                    "Label": {
-                        "default": "Amazon EC2 Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "NATInstanceType"
-                    ]
                 }
             ],
             "ParameterLabels": {
@@ -53,10 +44,7 @@
                 },
                 "KeyPairName": {
                     "default": "Key pair name"
-                },
-                "NATInstanceType": {
-                    "default": "NAT instance type"
-                },
+                },                
                 "NumberOfAZs": {
                     "default": "Number of Availability Zones"
                 },
@@ -115,26 +103,7 @@
             "Default": "false",
             "Description": "Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored.",
             "Type": "String"
-        },
-        "KeyPairName": {
-            "Description": "Public/private key pairs allow you to securely connect to your NAT instance after it launches. This is used only if the region does not support NAT gateways.",
-            "Type": "AWS::EC2::KeyPair::KeyName"
-        },
-        "NATInstanceType": {
-            "AllowedValues": [
-                "t2.nano",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "t2.large",
-                "m3.medium",
-                "m3.large",
-                "m4.large"
-            ],
-            "Default": "t2.small",
-            "Description": "Amazon EC2 instance type for the NAT instances. This is used only if the region does not support NAT gateways.",
-            "Type": "String"
-        },
+        },    
         "NumberOfAZs": {
             "AllowedValues": [
                 "2",
@@ -412,27 +381,7 @@
                     "Condition": "NATInstanceCondition"
                 }
             ]
-        },
-        "NATInstance&3AZCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "NATInstanceCondition"
-                },
-                {
-                    "Condition": "3AZCondition"
-                }
-            ]
-        },
-        "NATInstance&4AZCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "NATInstanceCondition"
-                },
-                {
-                    "Condition": "4AZCondition"
-                }
-            ]
-        },
+        },        
         "NATGateway&3AZCondition": {
             "Fn::And": [
                 {
@@ -948,27 +897,8 @@
                     "Ref": "PrivateSubnet1ARouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance1"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway1"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway1"
                 }
             }
         },
@@ -1008,27 +938,8 @@
                     "Ref": "PrivateSubnet2ARouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance2"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway2"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway2"
                 }
             }
         },
@@ -1070,27 +981,8 @@
                     "Ref": "PrivateSubnet3ARouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance3"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway3"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway3"
                 }
             }
         },
@@ -1133,27 +1025,8 @@
                     "Ref": "PrivateSubnet4ARouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance4"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway4"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway4"
                 }
             }
         },
@@ -1196,27 +1069,8 @@
                     "Ref": "PrivateSubnet1BRouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance1"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway1"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway1"
                 }
             }
         },
@@ -1318,27 +1172,8 @@
                     "Ref": "PrivateSubnet2BRouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance2"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway2"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway2"
                 }
             }
         },
@@ -1440,27 +1275,8 @@
                     "Ref": "PrivateSubnet3BRouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance3"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway3"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway3"
                 }
             }
         },
@@ -1562,27 +1378,8 @@
                     "Ref": "PrivateSubnet4BRouteTable"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance4"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
                 "NatGatewayId": {
-                    "Fn::If": [
-                        "NATGatewayCondition",
-                        {
-                            "Ref": "NATGateway4"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
+                    "Ref": "NATGateway4"
                 }
             }
         },
@@ -1738,36 +1535,14 @@
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
-                "Domain": "vpc",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance1"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                }
+                "Domain": "vpc"
             }
         },
         "NAT2EIP": {
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
-                "Domain": "vpc",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance2"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                }
+                "Domain": "vpc"
             }
         },
         "NAT3EIP": {
@@ -1775,18 +1550,7 @@
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
-                "Domain": "vpc",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance3"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                }
+                "Domain": "vpc"           
             }
         },
         "NAT4EIP": {
@@ -1794,18 +1558,7 @@
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
-                "Domain": "vpc",
-                "InstanceId": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "NATInstance4"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                }
+                "Domain": "vpc"                
             }
         },
         "NATGateway1": {
@@ -1870,234 +1623,6 @@
                 "SubnetId": {
                     "Ref": "PublicSubnet4"
                 }
-            }
-        },
-        "NATInstance1": {
-            "Condition": "NATInstanceCondition",
-            "DependsOn": "VPCGatewayAttachment",
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AWSNATHVM"
-                    ]
-                },
-                "InstanceType": {
-                    "Ref": "NATInstanceType"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "NAT1"
-                    }
-                ],
-                "NetworkInterfaces": [
-                    {
-                        "GroupSet": [
-                            {
-                                "Ref": "NATInstanceSecurityGroup"
-                            }
-                        ],
-                        "AssociatePublicIpAddress": "true",
-                        "DeviceIndex": "0",
-                        "DeleteOnTermination": "true",
-                        "SubnetId": {
-                            "Ref": "PublicSubnet1"
-                        }
-                    }
-                ],
-                "KeyName": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "KeyPairName"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
-                "SourceDestCheck": "false"
-            }
-        },
-        "NATInstance2": {
-            "Condition": "NATInstanceCondition",
-            "DependsOn": "VPCGatewayAttachment",
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AWSNATHVM"
-                    ]
-                },
-                "InstanceType": {
-                    "Ref": "NATInstanceType"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "NAT2"
-                    }
-                ],
-                "NetworkInterfaces": [
-                    {
-                        "GroupSet": [
-                            {
-                                "Ref": "NATInstanceSecurityGroup"
-                            }
-                        ],
-                        "AssociatePublicIpAddress": "true",
-                        "DeviceIndex": "0",
-                        "DeleteOnTermination": "true",
-                        "SubnetId": {
-                            "Ref": "PublicSubnet2"
-                        }
-                    }
-                ],
-                "KeyName": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "KeyPairName"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
-                "SourceDestCheck": "false"
-            }
-        },
-        "NATInstance3": {
-            "Condition": "NATInstance&3AZCondition",
-            "DependsOn": "VPCGatewayAttachment",
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AWSNATHVM"
-                    ]
-                },
-                "InstanceType": {
-                    "Ref": "NATInstanceType"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "NAT3"
-                    }
-                ],
-                "NetworkInterfaces": [
-                    {
-                        "GroupSet": [
-                            {
-                                "Ref": "NATInstanceSecurityGroup"
-                            }
-                        ],
-                        "AssociatePublicIpAddress": "true",
-                        "DeviceIndex": "0",
-                        "DeleteOnTermination": "true",
-                        "SubnetId": {
-                            "Ref": "PublicSubnet3"
-                        }
-                    }
-                ],
-                "KeyName": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "KeyPairName"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
-                "SourceDestCheck": "false"
-            }
-        },
-        "NATInstance4": {
-            "Condition": "NATInstance&4AZCondition",
-            "DependsOn": "VPCGatewayAttachment",
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AWSNATHVM"
-                    ]
-                },
-                "InstanceType": {
-                    "Ref": "NATInstanceType"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "NAT4"
-                    }
-                ],
-                "NetworkInterfaces": [
-                    {
-                        "GroupSet": [
-                            {
-                                "Ref": "NATInstanceSecurityGroup"
-                            }
-                        ],
-                        "AssociatePublicIpAddress": "true",
-                        "DeviceIndex": "0",
-                        "DeleteOnTermination": "true",
-                        "SubnetId": {
-                            "Ref": "PublicSubnet4"
-                        }
-                    }
-                ],
-                "KeyName": {
-                    "Fn::If": [
-                        "NATInstanceCondition",
-                        {
-                            "Ref": "KeyPairName"
-                        },
-                        {
-                            "Ref": "AWS::NoValue"
-                        }
-                    ]
-                },
-                "SourceDestCheck": "false"
-            }
-        },
-        "NATInstanceSecurityGroup": {
-            "Condition": "NATInstanceCondition",
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Enables outbound internet access for the VPC via the NAT instances",
-                "VpcId": {
-                    "Ref": "VPC"
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "-1",
-                        "FromPort": "1",
-                        "ToPort": "65535",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    }
-                ]
             }
         },
         "S3Endpoint": {

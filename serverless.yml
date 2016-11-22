@@ -1,4 +1,4 @@
-# Welcome to Serverless!
+  # Welcome to Serverless!
 #
 # This file is the main config file for your service.
 # It's very minimal at this point and uses default values.
@@ -15,6 +15,7 @@ service: my-idp
 
 provider:
   name: aws
+  region: us-west-2
   runtime: nodejs4.3
   cfLogs: true
   iamRoleStatements:
@@ -35,10 +36,10 @@ provider:
 # 2. then sls deploy with vpc configs
   vpc:
     securityGroupIds:
-      - sg-62a98e1b      
+      - sg-bd0828c4     
     subnetIds:
-      - subnet-521d1a24
-      - subnet-aade33cd
+      - subnet-29c4284e
+      - subnet-fa0b0d8c
   #profile: ko-playground-admin
 
 
