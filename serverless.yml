@@ -23,6 +23,7 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
+
     - Effect: "Allow"
       Action:
         - "ec2:CreateNetworkInterface"
@@ -40,7 +41,14 @@ provider:
     subnetIds:
       - subnet-29c4284e
       - subnet-fa0b0d8c
+  environment:
+    STAGE: ${opt:stage}
   #profile: ko-playground-admin
+
+
+
+
+  
 
 
 

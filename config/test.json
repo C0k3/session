@@ -3,6 +3,7 @@
   "UsersTable": "test-KODemoUsers",
   "RefreshTokenExpiration": "30 days",
   "AccessTokenExpiration": "1h",
+  "LogLevel": "debug",
   "DynamoDB": {
     "access_key": "test",
     "secret_key": "test",
