@@ -213,7 +213,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
         branch: development # Which branch to look for changes
     stages:
-      - test:
+      - test: &testStage
           clean_workspace: true
           jobs :
             unit-test :
@@ -255,6 +255,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
         branch: development # Which branch to look for changes
     stages:
+      - test: *testStage
       - deploy:
           approval:
             type: manual
