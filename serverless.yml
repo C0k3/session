@@ -1,11 +1,5 @@
   # Welcome to Serverless!
 #
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
 # For full config options, check the docs:
 #    docs.serverless.com
 #
@@ -56,12 +50,14 @@ functions:
       - http:
           path: ping
           method: get
+          cors: true
   getSession:
     handler: handler.getSession
     events:
         - http: 
             path: session
             method: GET
+            cors: true
             authorizer: 
               name: authorizer
               resultTtlInSeconds: 3
@@ -72,6 +68,7 @@ functions:
         - http:
             path: session
             method: POST
+            cors: true
             authorizer:
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
@@ -82,6 +79,7 @@ functions:
         - http:
             path: session
             method: PUT
+            cors: true
             authorizer:
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
@@ -92,6 +90,7 @@ functions:
         - http:
             path: session
             method: DELETE
+            cors: true
             authorizer: 
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
@@ -102,6 +101,7 @@ functions:
         - http: 
             path: user
             method: POST
+            cors: true
             authorizer: 
               name: clientIdAuthorizer
               resultTtlInSeconds: 300
@@ -112,6 +112,7 @@ functions:
         - http:
             path: user
             method: GET
+            cors: true
             authorizer: 
               name: authorizer
               resultTtlInSeconds: 3
