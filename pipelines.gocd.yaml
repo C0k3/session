@@ -213,10 +213,36 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
         branch: development # Which branch to look for changes
     stages:
+      - test: &testStage
+          clean_workspace: true
+          jobs :
+            unit-test :
+              environment_variables:
+                NODE_ENV: development
+              artifacts:
+              - test:
+                  source: test-results.xml
+                  destination: test-reports/
+              tasks:
+              - script: |
+                  npm install 
+                  node_modules/.bin/gulp test -f $FUNCTION_NAME
+            lint :
+              artifacts:
+              - build: # Tells Go to store this file. This file is needed to show the HTML in the Go GUI.
+                  source: jshint.html
+              tabs: # Tells Go to add custom tabs in the UI
+                lint: jshint.html # The contents of this HTMl will be shown in the custom tab in the Go UI
+              tasks: # Lint the source for a specific lambda
+              - script: |
+                  touch jshint.html
+                  npm install
+                  node_modules/.bin/gulp lint
+                  true
       - deploy:
           approval:
             type: manual
-          clean_workspace: true 
+          clean_workspace: true
           tasks:
           - script: |
               npm install --production
@@ -229,6 +255,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
         branch: development # Which branch to look for changes
     stages:
+      - test: *testStage
       - deploy:
           approval:
             type: manual
