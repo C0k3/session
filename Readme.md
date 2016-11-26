@@ -57,4 +57,4 @@ Each Lambda function passes through 5 stages:
 3. code coverage
 4. staging for manual test environment deployment
 5. automated deployment to the development environment
-6. manual deploy to test environment
+6. manual deployment to test environment
