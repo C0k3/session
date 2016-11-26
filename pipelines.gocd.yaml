@@ -226,7 +226,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               tasks:
               - script: |
                   npm install 
-                  node_modules/.bin/gulp test -f $FUNCTION_NAME
+                  node_modules/.bin/gulp test
             lint :
               artifacts:
               - build: # Tells Go to store this file. This file is needed to show the HTML in the Go GUI.
@@ -240,8 +240,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
                   node_modules/.bin/gulp lint
                   true
       - deploy:
-          approval:
-            type: manual
+          approval: manual
           clean_workspace: true
           tasks:
           - script: |
