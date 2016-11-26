@@ -1,4 +1,4 @@
-# Welcome to Serverless!
+  # Welcome to Serverless!
 #
 # For full config options, check the docs:
 #    docs.serverless.com
@@ -9,6 +9,7 @@ service: my-idp
 
 provider:
   name: aws
+  region: us-west-2
   runtime: nodejs4.3
   cfLogs: true
   iamRoleStatements:
@@ -16,9 +17,26 @@ provider:
       Action:
         - "dynamodb:*"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+      Resource: "*"
+# NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
+# see: https://github.com/serverless/serverless/issues/2697
+# until this is fixed, you have to do an initial sls deploy in 2 passes:
+# 1. sls deploy with iamRoleStatements including the proper ec2 actions
+# 2. then sls deploy with vpc configs
+#  vpc:
+#    securityGroupIds:
+#      - sg-bd0828c4     
+#    subnetIds:
+#      - subnet-29c4284e
+#      - subnet-fa0b0d8c
   environment:
     STAGE: ${opt:stage}
-  #profile: ko-playground-admin
+#  profile: ko-playground-admin
 
 package:
   exclude:
