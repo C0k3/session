@@ -28,15 +28,15 @@ provider:
 # until this is fixed, you have to do an initial sls deploy in 2 passes:
 # 1. sls deploy with iamRoleStatements including the proper ec2 actions
 # 2. then sls deploy with vpc configs
-  vpc:
-    securityGroupIds:
-      - sg-bd0828c4     
-    subnetIds:
-      - subnet-29c4284e
-      - subnet-fa0b0d8c
+#  vpc:
+#    securityGroupIds:
+#      - sg-bd0828c4     
+#    subnetIds:
+#      - subnet-29c4284e
+#      - subnet-fa0b0d8c
   environment:
     STAGE: ${opt:stage}
-  #profile: ko-playground-admin
+#  profile: ko-playground-admin
 
 package:
   exclude:
