@@ -30,10 +30,10 @@ provider:
 # 2. then sls deploy with vpc configs
 #  vpc:
 #    securityGroupIds:
-#      - sg-bd0828c4     
+#      - sg-b2200bcb  
 #    subnetIds:
-#      - subnet-29c4284e
-#      - subnet-fa0b0d8c
+#      - subnet-3ec1c248
+#      - subnet-3103ea56
   environment:
     STAGE: ${opt:stage}
 #  profile: ko-playground-admin
