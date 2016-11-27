@@ -205,8 +205,23 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         - "*.yml"
         - "*.yaml"
     stages: *functionStages
+  create-vpc:
+    group: network-deployment
+    label_template: "${session[:8]}"
+    materials:
+      session:
+        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
+        branch: development # Which branch to look for changes
+    stages:
+      - create:
+          approval:
+            type: manual
+          clean_workspace: true 
+          tasks:
+          - script: |
+              aws --region us-west-2 cloudformation create-stack --stack-name VPC-NAT-GATEWAY --template-url https://s3-us-west-2.amazonaws.com/serverless-vpc/aws-vpc.template --parameters ParameterKey=AvailabilityZones,ParameterValue=\"us-west-2a,us-west-2b\",UsePreviousValue=false
   deploy-dev: 
-    group: manual-deployment 
+    group: full-service-deployment 
     label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
     materials:
       session:
@@ -247,7 +262,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               npm install --production
               sls deploy --stage dev
   deploy-test: 
-    group: manual-deployment 
+    group: full-service-deployment 
     label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
     materials:
       session:
@@ -263,19 +278,4 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           - script: |
               npm install --production
               sls deploy --stage test
-  create-vpc:
-    group: manual-deployment
-    label_template: "${session[:8]}"
-    materials:
-      session:
-        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
-        branch: development # Which branch to look for changes
-    stages:
-      - create:
-          approval:
-            type: manual
-          clean_workspace: true 
-          tasks:
-          - script: |
-              aws --region us-west-2 cloudformation create-stack --stack-name VPC-NAT-GATEWAY --template-url https://s3-us-west-2.amazonaws.com/serverless-vpc/aws-vpc.template --parameters ParameterKey=AvailabilityZones,ParameterValue=\"us-west-2a,us-west-2b\",UsePreviousValue=false
-
+  
