@@ -10,6 +10,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development # Which branch to look for changes
         whitelist: # Out of all the files in the repo, only files that match these patterns will trigger a change to the repo
         - lambda_functions/authorizer/**/*.* # Only artifcats for the authorizer lambda should be matched
+        - lib/**.* # any changes to shared libraries should trigger the pipeline
         - "*.js" # Any changes to shared .js files in the root directory should trigger the pipeline
         - "*.json" # Any changes to shared .json files in the root directory should trigger the pipeline
         - "*.yml" # Any changes to shared .yml files in the root directory should trigger the pipeline
@@ -97,6 +98,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/clientIdAuthorizer/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -114,6 +116,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/createSession/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -131,6 +134,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/getSession/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -148,6 +152,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/refreshSession/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -165,6 +170,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/deleteSession/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -182,6 +188,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/createUser/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
@@ -199,6 +206,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         branch: development
         whitelist:
         - lambda_functions/getUser/**/*.*
+        - lib/**.*
         - "*.js"
         - "*.json"
         - "*.opts"
