@@ -59,8 +59,8 @@ Each Lambda function passes through 5 stages:
 5. automated deployment to the development environment
 6. manual deployment to test environment
 
+Steps 5 and 6 deploy the Lambda function as well the API Gateway definition for the function.
+
 All Lambda function pipelines are grouped together in Go.cd, with the build status of each stage visible (green):
 
 ![image](https://cloud.githubusercontent.com/assets/11197026/20676566/26c87608-b55e-11e6-8423-1a7b02854880.png)
-
-The develpment and test deployment steps deploy the Lambda function as well the API Gateway definition for the function.
