@@ -13,6 +13,7 @@
               branch: development
               whitelist:
               - lambda_functions/smilesAndFun/**/*.*
+              - lib/**.*
               - "*.js"
               - "*.json"
               - "*.opts"
