@@ -7,7 +7,7 @@ This is an example API built with the Serverless Framework and Go.cd pipeline su
 
 * Node.js
 * AWS Lambda, API Gateway, and DynamoDB
-* The Serverless Framework
+* The Serverless Framework v1.0
 * The Go.cd build server
 * Unit testing and static analysis with Gulp, Mocha, Sinon, Proxyquire, and JSHint
 * Code coverage with Istanbul
