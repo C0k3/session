@@ -8,7 +8,7 @@ This is an example API built with the Serverless Framework and Go.cd pipeline su
 * Node.js
 * AWS Lambda, API Gateway, and DynamoDB
 * The Serverless Framework v1.0
-* The Go.cd build server
+* The Go.cd build pipeline
 * Unit testing and static analysis with Gulp, Mocha, Sinon, Proxyquire, and JSHint
 * Code coverage with Istanbul
 
@@ -19,7 +19,7 @@ This is an example API built with the Serverless Framework and Go.cd pipeline su
 1. The [serverless.yml](serverless.yml) file defines all API Gateway and AWS Lambda function bindings as well as DynamoDB resources required to store user and session data. More information about serverless.yml can be found in the [Serverless Framework Development Guide](https://serverless.com/framework/docs/providers/aws/guide/services/).
 2. The [Serverless CLI](https://serverless.com/framework/docs/providers/aws/cli-reference/) provides utilities to deploy whole API stacks and individual endpoints into an AWS account. This tool is used by the Go.cd build server for Continuous Deployments.
 
-###The Go.cd build server
+###The Go.cd build pipeline
 
 The [Go.cd server](https://www.go.cd/) executes a per-function pipeline for automated testing, code coverage, and deployments. We're using [Tomasz Sętkowski's Go-CD Yaml Plugin](https://github.com/tomzo/gocd-yaml-config-plugin) to define all pipelines via the [pipelines.gocd.yaml](pipelines.gocd.yaml) file. More information about our pipeline definitions can be found here: [Definining Lambda Pipelines](pipelines.md). An example installation script for setting up your own Go.cd server can be found in the [go-serverless](https://github.com/C0k3/go-serverless) repository.
 
