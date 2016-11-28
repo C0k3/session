@@ -80,21 +80,21 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           clean_workspace: true
           approval:
             type: manual # Require someone in the UI to manually approve the execution of this stage
-          jobs:
-            deploy-test:
-              tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
-              - script: |
-                  git checkout test-deploy
-                  git pull
-                  npm install . --production
-                  sls deploy function -f $FUNCTION_NAME --stage test
-            stage-for-prod:
-              tasks:
-              - script: |
-                  source /etc/gitPassword
-                  git checkout master
-                  git rebase --onto test-deploy origin
-                  git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
+          tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
+          - script: |
+              git checkout test-deploy
+              git pull
+              npm install . --production
+              npm install create-function --production
+              sls deploy function -f $FUNCTION_NAME --stage test
+      - stage-for-prod:
+          clean_workspace: true
+          tasks: # If all previous stages passed then use environment variables defined in gitPassword to rebase the master branch off of the test-deploy branch
+          - script: |
+              source /etc/gitPassword
+              git checkout master
+              git rebase --onto test-deploy origin
+              git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
 
   clientIdAuthorizer: # Define a new Pipeline for a specific lambda
     group: session
