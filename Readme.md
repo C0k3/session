@@ -16,7 +16,7 @@ This is an example API built with the Serverless Framework and Go.cd pipeline su
 
 [The Serverless Framework v1.0](https://serverless.com/) provides two tools that speed up serverless development and deployment:
 
-1. The [serverless.yml](serverless.yml) file defines all API Gateway and AWS Lambda function bindings as well as DynamoDB resources required to store user and session data. More information about serverless.yml can be found in the [Serverless Framework Development Guide].(https://serverless.com/framework/docs/providers/aws/guide/services/)
+1. The [serverless.yml](serverless.yml) file defines all API Gateway and AWS Lambda function bindings as well as DynamoDB resources required to store user and session data. More information about serverless.yml can be found in the [Serverless Framework Development Guide](https://serverless.com/framework/docs/providers/aws/guide/services/).
 2. The [Serverless CLI](https://serverless.com/framework/docs/providers/aws/cli-reference/) provides utilities to deploy whole API stacks and individual endpoints into an AWS account. This tool is used by the Go.cd build server for Continuous Deployments.
 
 ###The Go.cd build server
