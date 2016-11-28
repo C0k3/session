@@ -40,7 +40,7 @@ Unit tests live in the same directory as the code that they are testing and foll
 
 ##Application Architecture
 ![image](https://cloud.githubusercontent.com/assets/11197026/20681286/ee6d8fe2-b570-11e6-8602-8d680ec7d099.png)
-* Build server pipelines are defined in [pipelines.gocd.yaml](pipelines.gocd.yaml).
+* Build pipelines are defined in [pipelines.gocd.yaml](pipelines.gocd.yaml).
 * Application resources are defined in [serverless.yml](serverless.yml).
 * VPC and NAT Gateway resources are defined in [aws-vpc.template](aws-vpc.template).
   * A "create-vpc" pipeline on the build server will execute this template on-demand
