@@ -46,7 +46,7 @@ Microservice architectures adhere to the following principles:
 AWS Lambda supports resource isolation by hosting each Lambda function in its own set of containers with its own resource allocation (CPU and Memory). A Lambda function's resource allocation is defined using the "memorySize" field for that function in serverless.yml (see [docs](https://serverless.com/framework/docs/providers/aws/guide/functions/) for details).
 
 ####Development and deployment segregation
-Deployments occur on a per-function basis. For example: a function supporting a particular API endpoint can be deployed independantly of functions supporting other API endpoints.
+Deployments occur on a per-function basis: a function supporting a particular API endpoint can be deployed independantly of functions supporting other API endpoints.
 
 The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is indenpendantly tested and deployed (while any shared code is tested across all Lambda functions). 
 
