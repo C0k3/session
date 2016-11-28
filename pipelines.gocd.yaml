@@ -1,21 +1,21 @@
 pipelines: # Container for all pipelines defined in this file. Each pipeline is an individual Lambda function
   authorizer: # The name of the lambda function is used for several things. In this case, it is used as the name of an individual pipeline instance
-    group: session # Pipelines are grouped in the Go UI. This deintes that this pipeline should be grouped in the UI into a group called lambda
-    label_template: "${authorizer[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
-    environment_variables: # A contianer for environment variables that are scoped at the pipeline level. These can be overridden at lower levels
+    group: session # Pipelines are grouped in the Go UI. This denotes that this pipeline should be grouped in the UI into a group called session
+    label_template: "${authorizer[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline - it's the first 8 characters of the git commit hash of the git repo defined in the materials section
+    environment_variables: # A container for environment variables that are scoped at the pipeline level. These can be overridden at lower levels
       FUNCTION_NAME: authorizer # This environment variable allows the stages of this pipeline to be used as a template for other pipelines. The env variable is used in Lint, unit tests, and deployment actions
-    materials: # These define all sources to the pipepeline. In affect any items defined here Go will poll and look for any changes to in the source.
+    materials: # These define all sources to the pipeline. In affect, any items defined here will be polled to find any changes to in the source.
       authorizer: # The name of an individual source
-        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
+        git: https://github.com/C0k3/session # Declares 1) This source is a git-based source and 2) The location of the source to poll
         branch: development # Which branch to look for changes
-        whitelist: # Out of all the files in the repo, only files that match these patterns will trigger a change to the repo
+        whitelist: # Only changes to files that match these patterns will trigger a change new build
         - lambda_functions/authorizer/**/*.* # Only artifcats for the authorizer lambda should be matched
-        - lib/**.* # any changes to shared libraries should trigger the pipeline
+        - lib/**.* # Any changes to shared libraries should trigger the pipeline
         - "*.js" # Any changes to shared .js files in the root directory should trigger the pipeline
         - "*.json" # Any changes to shared .json files in the root directory should trigger the pipeline
         - "*.yml" # Any changes to shared .yml files in the root directory should trigger the pipeline
         - "*.yaml" # Any changes to shared .yaml files in the root directory should trigger the pipeline
-    stages: &functionStages # This line 1) declares an ordered contianer for all stages in this pipeline and 2) Creates a reference to those stages so that other pipelines can re-use them.
+    stages: &functionStages # This line 1) declares an ordered container for all stages in this pipeline and 2) Creates a reference to those stages so that other pipelines can re-use them.
       - unit-test: # Declares stage called "unit-testing"
           clean_workspace: true # Remove all files/directories in the working directory
           environment_variables: # Define environment variables specifically for the "unit-testing" stage
@@ -80,13 +80,22 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           clean_workspace: true
           approval:
             type: manual # Require someone in the UI to manually approve the execution of this stage
-          tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
-          - script: |
-              git checkout test-deploy
-              git pull
-              npm install . --production
-              npm install create-function --production
-              sls deploy function -f $FUNCTION_NAME --stage test
+          jobs:
+            deploy-test:
+              tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
+              - script: |
+                  git checkout test-deploy
+                  git pull
+                  npm install . --production
+                  sls deploy function -f $FUNCTION_NAME --stage test
+            stage-for-prod:
+              tasks:
+              - script: |
+                  source /etc/gitPassword
+                  git checkout master
+                  git rebase --onto test-deploy origin
+                  git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
+
   clientIdAuthorizer: # Define a new Pipeline for a specific lambda
     group: session
     label_template: "${clientIdAuthorizer[:8]}"
