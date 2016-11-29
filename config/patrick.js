@@ -12,6 +12,6 @@ module.exports = {
   },
 //NOTE: DO NOT STORE SALT IN CODE --> this is for demo puposes only
 //in production consider an encrypted value in code and store the decryption key in AWS KMS
-  apiIdSalt: '{apiId_salt}',
-  passwordSalt: '{password_salt}'
+  ApiIdSalt: '{apiId_salt}',
+  PasswordSalt: '{password_salt}'
 }
