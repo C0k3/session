@@ -62,11 +62,13 @@ Each Lambda function passes through 5 stages:
 1. unit testing
 2. linting
 3. code coverage
-4. staging for manual test environment deployment
-5. automated deployment to the development environment
+4. automated deployment to the development environment
+5. staging for test environment deployment
 6. manual deployment to test environment
+7. staging for prod environment deployment
+8. manual deployment to prod environment
 
-Steps 5 and 6 deploy the Lambda function as well the API Gateway interface for the function.
+Steps 4, 6, and 8 deploy the Lambda function as well the API Gateway interface for the function.
 
 All Lambda function pipelines are grouped together in Go.cd, with the build status of each stage visible (green):
 
