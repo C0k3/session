@@ -5,8 +5,7 @@
 #
 # Happy Coding!
 
-service: my-idp
-
+service: session
 provider:
   name: aws
   region: us-west-2
@@ -23,6 +22,8 @@ provider:
         - "ec2:DescribeNetworkInterfaces"
         - "ec2:DeleteNetworkInterface"
       Resource: "*"
+  environment:
+    STAGE: ${opt:stage}
 # NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
 # see: https://github.com/serverless/serverless/issues/2697
 # until this is fixed, you have to do an initial sls deploy in 2 passes:
@@ -34,14 +35,13 @@ provider:
 #    subnetIds:
 #      - subnet-3ec1c248
 #      - subnet-3103ea56
-  environment:
-    STAGE: ${opt:stage}
 #  profile: ko-playground-admin
 
 package:
   exclude:
     - gulpfile.js
     - lambda_functions/**/*.test.js
+    - lib/**/*.test.js
 
 functions:
   ping:
@@ -49,7 +49,7 @@ functions:
     events:
       - http:
           path: ping
-          method: get
+          method: GET
           cors: true
   getSession:
     handler: handler.getSession
