@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/C0k3/session.svg?branch=development)](https://travis-ci.org/C0k3/session)
 #/session: a Serverless API Example
 
-This is an example API built with the Serverless Framework and Go.cd pipeline support. This Session API example creates user accounts and short and long-lived sessions using JSON Web Tokens.
+This is an example API built with the Serverless Framework and Go.cd pipeline support. This Session API example creates user accounts and short and long-lived sessions using JSON Web Tokens. Details can be found in the [API Reference](api-reference.md).
 
 ##Core Technologies
 
