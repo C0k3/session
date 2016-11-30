@@ -61,7 +61,13 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               node_modules/.bin/nyc --reporter html node_modules/.bin/gulp test -f $FUNCTION_NAME
               true
           - script: |
-              node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES
+              node_modules/.bin/nyc check-coverage --lines $COV_LINES --functions $COV_FUNCTIONS --branches $COV_BRANCHES      
+      - deploy-dev:
+          clean_workspace: true
+          tasks: # deploy the lambda function to the "dev" stage
+          - script: |
+              npm install . --production
+              sls deploy function -f $FUNCTION_NAME --stage dev
       - stage-for-test:
           clean_workspace: true
           tasks: # If all previous stages passed then use environment variables defined in gitPassword to rebase the test-deploy branch off of the development branch
@@ -70,12 +76,6 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               git checkout test-deploy
               git rebase --onto development origin
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
-      - deploy-dev:
-          clean_workspace: true
-          tasks: # deploy the lambda function to the "dev" stage
-          - script: |
-              npm install . --production
-              sls deploy function -f $FUNCTION_NAME --stage dev
       - deploy-test:
           clean_workspace: true
           approval:
@@ -92,6 +92,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           tasks: # If all previous stages passed then use environment variables defined in gitPassword to rebase the master branch off of the test-deploy branch
           - script: |
               source /etc/gitPassword
+              git checkout test-deploy
               git checkout master
               git rebase --onto test-deploy origin
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
