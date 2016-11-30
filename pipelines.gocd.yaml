@@ -85,7 +85,6 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               git checkout test-deploy
               git pull
               npm install . --production
-              npm install create-function --production
               sls deploy function -f $FUNCTION_NAME --stage test
       - stage-for-prod:
           clean_workspace: true
@@ -96,6 +95,16 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               git checkout master
               git rebase --onto test-deploy origin
               git push -f https://$GIT_USERNAME:$GIT_PASSWORD@github.com/C0k3/session 2> /dev/null
+      - deploy-prod:
+          clean_workspace: true
+          approval:
+            type: manual # Require someone in the UI to manually approve the execution of this stage
+          tasks: # Pull from the test-deploy branch and deploy the code to the "test" environment
+          - script: |
+              git checkout master
+              git pull
+              npm install . --production
+              sls deploy function -f $FUNCTION_NAME --stage prod
 
   clientIdAuthorizer: # Define a new Pipeline for a specific lambda
     group: session
@@ -281,11 +290,11 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               sls deploy --stage dev
   deploy-test: 
     group: full-service-deployment 
-    label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
+    label_template: "${session[:8]}"
     materials:
       session:
-        git: https://github.com/C0k3/session # Declares 1) This source is a git based source and 2) The location of the source to poll
-        branch: development # Which branch to look for changes
+        git: https://github.com/C0k3/session
+        branch: development
     stages:
       - test: *testStage
       - deploy:
@@ -296,4 +305,21 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           - script: |
               npm install --production
               sls deploy --stage test
+  deploy-prod: 
+    group: full-service-deployment 
+    label_template: "${session[:8]}"
+    materials:
+      session:
+        git: https://github.com/C0k3/session
+        branch: master
+    stages:
+      - test: *testStage
+      - deploy:
+          approval:
+            type: manual
+          clean_workspace: true
+          tasks:
+          - script: |
+              npm install --production
+              sls deploy --stage prod
   
