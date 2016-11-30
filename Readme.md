@@ -72,4 +72,4 @@ Steps 4, 6, and 8 deploy the Lambda function as well the API Gateway interface f
 
 All Lambda function pipelines are grouped together in Go.cd, with the build status of each stage visible (green):
 
-![image](https://cloud.githubusercontent.com/assets/11197026/20676566/26c87608-b55e-11e6-8423-1a7b02854880.png)
+![image](https://cloud.githubusercontent.com/assets/11197026/20761642/7d660108-b6d8-11e6-8dea-eba48bd5a674.png)
