@@ -57,7 +57,7 @@ Deployments occur on a per-function basis: a function supporting a particular AP
 
 The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is indenpendantly tested and deployed (while any shared code is tested across all Lambda functions). 
 
-Each Lambda function passes through 5 stages:
+Each Lambda function passes through 8 stages:
 
 1. unit testing
 2. linting
