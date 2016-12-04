@@ -3,6 +3,9 @@
 
 This is an example API built with the Serverless Framework and Go.cd pipeline support. This Session API example creates user accounts and short and long-lived sessions using JSON Web Tokens. Details can be found in the [API Reference](api-reference.md).
 
+###Re:Invent 2016 Talk
+This API example was featured in a talk during AWS Re:Invent 2016: https://www.youtube.com/watch?v=yErmil00DYs. A walkthrough of the Serverless Framework and build pipeline begins at 37:30.
+
 ##Core Technologies
 
 * Node.js
