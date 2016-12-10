@@ -105,7 +105,6 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
               git pull
               npm install . --production
               sls deploy function -f $FUNCTION_NAME --stage prod
-
   clientIdAuthorizer: # Define a new Pipeline for a specific lambda
     group: session
     label_template: "${clientIdAuthorizer[:8]}"
@@ -232,6 +231,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
         - "*.yml"
         - "*.yaml"
     stages: *functionStages
+
   create-vpc:
     group: network-deployment
     label_template: "${session[:8]}"
@@ -247,6 +247,7 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           tasks:
           - script: |
               aws --region us-west-2 cloudformation create-stack --stack-name VPC-NAT-GATEWAY --template-url https://s3-us-west-2.amazonaws.com/serverless-vpc/aws-vpc.template --parameters ParameterKey=AvailabilityZones,ParameterValue=\"us-west-2a,us-west-2b\",UsePreviousValue=false
+
   deploy-dev: 
     group: full-service-deployment 
     label_template: "${session[:8]}" # This is used in the UI to represent a label for an individual run of the pipeline
@@ -322,4 +323,3 @@ pipelines: # Container for all pipelines defined in this file. Each pipeline is 
           - script: |
               npm install --production
               sls deploy --stage prod
-  
