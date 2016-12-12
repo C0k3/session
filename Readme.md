@@ -3,6 +3,9 @@
 
 This is an example API built with the Serverless Framework and Go.cd pipeline support. This Session API example creates user accounts and short and long-lived sessions using JSON Web Tokens. Details can be found in the [API Reference](api-reference.md).
 
+###Re:Invent 2016 Talk
+This API example was featured in a talk during AWS Re:Invent 2016: https://www.youtube.com/watch?v=yErmil00DYs. A walkthrough of the Serverless Framework and build pipeline begins at 37:30.
+
 ##Core Technologies
 
 * Node.js
@@ -57,7 +60,7 @@ Deployments occur on a per-function basis: a function supporting a particular AP
 
 The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is indenpendantly tested and deployed (while any shared code is tested across all Lambda functions). 
 
-Each Lambda function passes through 5 stages:
+Each Lambda function passes through 8 stages:
 
 1. unit testing
 2. linting
