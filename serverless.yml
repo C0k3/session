@@ -31,20 +31,22 @@ provider:
     ACCESS_TOKEN_EXPIRATION: ${self:custom.config.AccessTokenExpiration}
     REFRESH_TOKEN_EXPIRATION: ${self:custom.config.RefreshTokenExpiration}
     LOG_LEVEL: ${self:custom.config.LogLevel}
-    API_ID_SALT: ${self:custom.config.ApiIdSalt}
-    PASSWORD_SALT: ${self:custom.config.PasswordSalt}
+    API_ID_SALT: ${self:custom.config.ApiIdSalt} # salts must be encrypted in configs - use AWS KMS to decrypt at run-time
+    PASSWORD_SALT: ${self:custom.config.PasswordSalt} # salts must be encrypted in configs - use AWS KMS to decrypt at run-time
+
 # NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
 # see: https://github.com/serverless/serverless/issues/2697
 # until this is fixed, you have to do an initial sls deploy in 2 passes:
 # 1. sls deploy with iamRoleStatements including the proper ec2 actions
 # 2. then sls deploy with vpc configs
-  vpc:
+# if you don't want to run your function from a VPC, comment-out or remove this section:
+  vpc: # use a different VPC per environment
     securityGroupIds:
       - ${self:custom.config.VPC.SG1}
     subnetIds:
       - ${self:custom.config.VPC.SN1}
       - ${self:custom.config.VPC.SN2}
-  #profile: ko-playground-admin
+  profile: ko-playground-admin
 
 package:
   exclude:
