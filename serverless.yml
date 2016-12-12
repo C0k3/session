@@ -6,11 +6,13 @@
 # Happy Coding!
 
 service: session
+custom:
+  config: ${file(./config/${opt:stage}.js):config}
 provider:
   name: aws
   region: us-west-2
   runtime: nodejs4.3
-  cfLogs: true
+  cfLogs: true 
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -24,24 +26,32 @@ provider:
       Resource: "*"
   environment:
     STAGE: ${opt:stage}
+    USERS_TABLE: ${self:custom.config.UsersTable}
+    REFRESH_TOKEN_TABLE: ${self:custom.config.RefreshTokenTable}
+    ACCESS_TOKEN_EXPIRATION: ${self:custom.config.AccessTokenExpiration}
+    REFRESH_TOKEN_EXPIRATION: ${self:custom.config.RefreshTokenExpiration}
+    LOG_LEVEL: ${self:custom.config.LogLevel}
+    API_ID_SALT: ${self:custom.config.ApiIdSalt}
+    PASSWORD_SALT: ${self:custom.config.PasswordSalt}
 # NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
 # see: https://github.com/serverless/serverless/issues/2697
 # until this is fixed, you have to do an initial sls deploy in 2 passes:
 # 1. sls deploy with iamRoleStatements including the proper ec2 actions
 # 2. then sls deploy with vpc configs
-#  vpc:
-#    securityGroupIds:
-#      - sg-b2200bcb  
-#    subnetIds:
-#      - subnet-3ec1c248
-#      - subnet-3103ea56
-#  profile: ko-playground-admin
+  vpc:
+    securityGroupIds:
+      - ${self:custom.config.VPC.SG1}
+    subnetIds:
+      - ${self:custom.config.VPC.SN1}
+      - ${self:custom.config.VPC.SN2}
+  #profile: ko-playground-admin
 
 package:
   exclude:
     - gulpfile.js
     - lambda_functions/**/*.test.js
     - lib/**/*.test.js
+    - config
 
 functions:
   ping:
@@ -145,7 +155,7 @@ resources:
         ProvisionedThroughput:
           WriteCapacityUnits: 5
           ReadCapacityUnits: 5
-        TableName: ${opt:stage}-KODemoUsers
+        TableName: ${self:custom.config.UsersTable}
         KeySchema:
         - KeyType: HASH
           AttributeName: Id
@@ -181,7 +191,7 @@ resources:
         ProvisionedThroughput:
           WriteCapacityUnits: 5
           ReadCapacityUnits: 5
-        TableName: ${opt:stage}-KODemoTokens
+        TableName: ${self:custom.config.RefreshTokenTable}
         KeySchema:
         - KeyType: HASH
           AttributeName: RefreshToken

@@ -7,6 +7,7 @@ var jshint = require('gulp-jshint');
 var stylish_lint_reporter = require('jshint-stylish');
 var env = require('gulp-env');
 var nconf = require('nconf');
+var config = require('./config/test').config();
 
 nconf.argv({
   f: {
@@ -19,7 +20,14 @@ nconf.argv({
 
 gulp.task('test', function() {
     const envs = env.set({
-        STAGE: 'test'
+        STAGE: 'test',
+        USERS_TABLE: config.UsersTable,
+        REFRESH_TOKEN_TABLE: config.RefreshTokenTable,
+        ACCESS_TOKEN_EXPIRATION: config.AccessTokenExpiration,
+        REFRESH_TOKEN_EXPIRATION: config.RefreshTokenExpiration,
+        LOG_LEVEL: config.LogLevel,
+        API_ID_SALT: config.ApiIdSalt,
+        PASSWORD_SALT: config.PasswordSalt
     });
     
     const target = `lambda_functions/${nconf.get('f') ? nconf.get('f') + '/' : ''}**/*.test.js`;
@@ -40,7 +48,7 @@ gulp.task('lint', function() {
     './gulpfile.js',
     './test/**/*.js',
     'package.json',
-    './config/**/*.json'])
+    './config/**/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish_lint_reporter))
     .pipe(jshint.reporter('gulp-jshint-html-reporter', {

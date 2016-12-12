@@ -8,7 +8,6 @@ var secrets = require('../../lib/secrets');
 var token = require('../../lib/token');
 var authorization = require('../../lib/authorization');
 var constants = require('../../lib/constants');
-var config = require(`../../config/${process.env.STAGE}`);
 var bb = require('bluebird');
 
 module.exports = function(event, context, cb) {
@@ -71,7 +70,7 @@ module.exports = function(event, context, cb) {
                             }
 
                             let userId = jwt.decode(body.refresh_token).sub;
-                            let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId, config.AccessTokenExpiration);
+                            let access_token = token.createAccessToken(userId, clientId, event.requestContext.apiId, process.env.ACCESS_TOKEN_EXPIRATION);
                             db.saveTokens(body.refresh_token, access_token, userId, clientId)
                                 .then(() => {
                                     return cb(null, response.create(200,

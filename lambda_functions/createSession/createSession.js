@@ -6,7 +6,6 @@ var constants = require('../../lib/constants');
 var secrets = require('../../lib/secrets');
 var jwt = require('jsonwebtoken');
 var token = require('../../lib/token');
-var config = require(`../../config/${process.env.STAGE}`);
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);
@@ -66,7 +65,7 @@ module.exports = function(event, context, cb) {
 
 function createTokens(userId, clientId, apiId) {
     return {
-        refresh_token: token.createRefreshToken(userId, clientId, apiId, config.RefreshTokenExpiration),
-        access_token: token.createAccessToken(userId, clientId, apiId, config.AccessTokenExpiration)
+        refresh_token: token.createRefreshToken(userId, clientId, apiId, process.env.REFRESH_TOKEN_EXPIRATION),
+        access_token: token.createAccessToken(userId, clientId, apiId, process.env.ACCESS_TOKEN_EXPIRATION)
     };
 }
