@@ -46,7 +46,7 @@ provider:
     subnetIds:
       - ${self:custom.config.VPC.SN1}
       - ${self:custom.config.VPC.SN2}
-  profile: ko-playground-admin
+  #profile: ko-playground-admin
 
 package:
   exclude:
