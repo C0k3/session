@@ -58,7 +58,7 @@ AWS Lambda supports resource isolation by hosting each Lambda function in its ow
 ####Development and deployment segregation
 Deployments occur on a per-function basis: a function supporting a particular API endpoint can be deployed independantly of functions supporting other API endpoints.
 
-The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is indenpendantly tested and deployed (while any shared code is tested across all Lambda functions). 
+The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is independently tested and deployed (while any shared code is tested across all Lambda functions). 
 
 Each Lambda function passes through 8 stages:
 
