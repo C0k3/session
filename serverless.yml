@@ -35,7 +35,7 @@ provider:
     PASSWORD_SALT: ${self:custom.config.PasswordSalt} # salts must be encrypted in configs - use AWS KMS to decrypt at run-time
 
 # NOTE: vpc deployment can fail due to a race condition in CFT: functions are being created before the role permissions are ready
-# see: https://github.com/serverless/serverless/issues/2697
+# see: https://github.com/serverless/serverless/issues/2780
 # until this is fixed, you have to do an initial sls deploy in 2 passes:
 # 1. sls deploy with iamRoleStatements including the proper ec2 actions
 # 2. then sls deploy with vpc configs
@@ -46,7 +46,7 @@ provider:
     subnetIds:
       - ${self:custom.config.VPC.SN1}
       - ${self:custom.config.VPC.SN2}
-  #profile: ko-playground-admin
+  profile: ko-playground-admin
 
 package:
   exclude:
