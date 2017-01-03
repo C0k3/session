@@ -40,7 +40,7 @@ provider:
 # 1. sls deploy with iamRoleStatements including the proper ec2 actions
 # 2. then sls deploy with vpc configs
 # if you don't want to run your function from a VPC, comment-out or remove this section:
-  vpc: ${self:custom.config.VPC} # use a different VPC per environment
+  vpc: ${self:custom.config.VPC}
   profile: ko-playground-admin
 
 package:
