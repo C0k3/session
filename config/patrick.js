@@ -10,9 +10,8 @@ module.exports.config = function() {
         ApiIdSalt: '{apiId_salt}',
         PasswordSalt: '{password_salt}',
         VPC: {
-            SG1: 'sg-b2200bcb',
-            SN1: 'subnet-3ec1c248',
-            SN2: 'subnet-3103ea56'
+            securityGroupIds: ['sg-b2200bcb'],
+            subnetIds: ['subnet-3ec1c248', 'subnet-3103ea56']
         }
     };
 };
