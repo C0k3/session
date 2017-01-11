@@ -1,12 +1,13 @@
 'use strict';
-var proxyquire = require('proxyquire'),
-    chai = require('chai'),
-    sinon = require('sinon'),
-    assert = chai.assert,
-    expect = chai.expect,
-    testHelper = require('../../util/testHelper'),
-    secrets = require('../../lib/secrets'),
-    constants = require('../../lib/constants');
+
+const proxyquire = require('proxyquire');
+const chai = require('chai');
+const sinon = require('sinon');
+const assert = chai.assert;
+const expect = chai.expect;
+const testHelper = require('../../util/testHelper');
+const secrets = require('../../lib/secrets');
+const constants = require('../../lib/constants');
 
 describe('clientIdAuthorizer', function() {
     beforeEach(function() {

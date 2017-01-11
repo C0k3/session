@@ -1,7 +1,8 @@
 'use strict';
-var constants = require('../../lib/constants');
-var log = require('../../lib/log');
-var authorization = require('../../lib/authorization');
+
+const constants = require('../../lib/constants');
+const log = require('../../lib/log');
+const authorization = require('../../lib/authorization');
 
 module.exports = function(event, context, cb) {
 

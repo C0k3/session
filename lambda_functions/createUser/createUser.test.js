@@ -1,14 +1,13 @@
 /*jshint expr: true*/
 'use strict';
-var proxyquire = require('proxyquire'),
-    chai = require('chai'),
-    sinon = require('sinon'),
-    assert = chai.assert,
-    expect = chai.expect,
-    testHelper = require('../../util/testHelper'),
-    secrets = require('../../lib/secrets');
 
-//var createUser = require('./createUser');
+const proxyquire = require('proxyquire');
+const chai = require('chai');
+const sinon = require('sinon');
+const assert = chai.assert;
+const expect = chai.expect;
+const testHelper = require('../../util/testHelper');
+const secrets = require('../../lib/secrets');
 
 const testPassword = 'Iam@llright2';
 const testEmail = 'myman@me.com';

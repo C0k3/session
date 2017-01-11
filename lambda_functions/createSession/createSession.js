@@ -1,11 +1,12 @@
 'use strict';
-var response = require('../../lib/response');
-var db = require('../../lib/db');
-var log = require('../../lib/log');
-var constants = require('../../lib/constants');
-var secrets = require('../../lib/secrets');
-var jwt = require('jsonwebtoken');
-var token = require('../../lib/token');
+
+const response = require('../../lib/response');
+const db = require('../../lib/db');
+const log = require('../../lib/log');
+const constants = require('../../lib/constants');
+const secrets = require('../../lib/secrets');
+const jwt = require('jsonwebtoken');
+const token = require('../../lib/token');
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);

@@ -1,9 +1,10 @@
 'use strict';
-var log = require('../../lib/log');
-var token = require('../../lib/token');
-var db = require('../../lib/db');
-var response = require('../../lib/response');
-var jwt = require('jsonwebtoken');
+
+const log = require('../../lib/log');
+const token = require('../../lib/token');
+const db = require('../../lib/db');
+const response = require('../../lib/response');
+const jwt = require('jsonwebtoken');
 
 module.exports = function(event, context, cb) { 
     token.parseAuthorizationHeader(event.headers.Authorization)

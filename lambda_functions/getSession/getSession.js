@@ -1,9 +1,10 @@
 'use strict';
-var jwt = require('jsonwebtoken'); //https://www.npmjs.com/package/jsonwebtoken
-var log = require('../../lib/log');
-var token = require('../../lib/token');
-var response = require('../../lib/response');
-var constants = require('../../lib/constants');
+
+const jwt = require('jsonwebtoken'); //https://www.npmjs.com/package/jsonwebtoken
+const log = require('../../lib/log');
+const token = require('../../lib/token');
+const response = require('../../lib/response');
+const constants = require('../../lib/constants');
 
 module.exports = function(event, context, cb) {
     token.parseAuthorizationHeader(event.headers[constants.AUTHORIZATION_HEADER])

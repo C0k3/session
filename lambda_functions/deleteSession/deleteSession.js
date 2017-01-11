@@ -1,7 +1,8 @@
 'use strict';
-var log = require('../../lib/log');
-var db = require('../../lib/db');
-var response = require('../../lib/response');
+
+const log = require('../../lib/log');
+const db = require('../../lib/db');
+const response = require('../../lib/response');
 
 module.exports = function(event, context, cb) {
     let body = JSON.parse(event.body);

@@ -1,9 +1,10 @@
 'use strict';
-var log = require('../../lib/log');
-var response = require('../../lib/response');
-var secrets = require('../../lib/secrets');
-var db = require('../../lib/db');
-var constants = require('../../lib/constants');
+
+const log = require('../../lib/log');
+const response = require('../../lib/response');
+const secrets = require('../../lib/secrets');
+const db = require('../../lib/db');
+const constants = require('../../lib/constants');
 
 module.exports = function(event, context, cb) {
     try {

@@ -1,5 +1,6 @@
 'use strict';
-var constants = require('../lib/constants');
+
+const constants = require('../lib/constants');
 
 module.exports = {
     check: (done, test) => {

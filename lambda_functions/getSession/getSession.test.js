@@ -1,13 +1,14 @@
 'use strict';
-var proxyquire = require('proxyquire'),
-    chai = require('chai'),
-    sinon = require('sinon'),
-    assert = chai.assert,
-    expect = chai.expect,
-    testHelper = require('../../util/testHelper'),
-    jwt = require('jsonwebtoken'),
-    constants = require('../../lib/constants'),
-    getSession = require('./getSession');
+
+const proxyquire = require('proxyquire');
+const chai = require('chai');
+const sinon = require('sinon');
+const assert = chai.assert;
+const expect = chai.expect;
+const testHelper = require('../../util/testHelper');
+const jwt = require('jsonwebtoken');
+const constants = require('../../lib/constants');
+const getSession = require('./getSession');
 
 describe('getSession', function() {
     beforeEach(function() {

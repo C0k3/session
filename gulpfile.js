@@ -1,13 +1,15 @@
+/* globals -mocha */
 'use strict';
-var gulp = require('gulp');
-var guppy = require('git-guppy')(gulp);
-var runSequence = require('run-sequence');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
-var stylish_lint_reporter = require('jshint-stylish');
-var env = require('gulp-env');
-var nconf = require('nconf');
-var config = require('./config/test').config();
+
+const gulp = require('gulp');
+const guppy = require('git-guppy')(gulp);
+const runSequence = require('run-sequence');
+const mocha = require('gulp-mocha');
+const jshint = require('gulp-jshint');
+const stylish_lint_reporter = require('jshint-stylish');
+const env = require('gulp-env');
+const nconf = require('nconf');
+const config = require('./config/test').config();
 
 nconf.argv({
   f: {
