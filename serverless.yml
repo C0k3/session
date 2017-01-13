@@ -48,7 +48,7 @@ provider:
 # 2. then sls deploy with vpc configs
 # if you don't want to run your function from a VPC, set config.VPC to an empty object:
   vpc: ${self:custom.config.VPC}
-  profile: ko-playground-admin
+  #profile: ko-playground-admin
 
 package:
   exclude:
