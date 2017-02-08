@@ -42,7 +42,7 @@ Unit tests live in the same directory as the code that they are testing and foll
 [JSHint](http://jshint.com/docs/) is used for linting/static code analysis and [instanbul](https://www.npmjs.com/package/istanbul) provides code coverege, with help from the [nyc](https://www.npmjs.com/package/nyc) command-line tool (used by the build server to run code coverage during pipeline deployments).
 
 ##Application Architecture
-![image](https://cloud.githubusercontent.com/assets/11197026/20681286/ee6d8fe2-b570-11e6-8602-8d680ec7d099.png)
+![image](https://cloud.githubusercontent.com/assets/11197026/22758035/ee70d52a-ee1a-11e6-8b51-b2a44042c06a.png)
 * Application resources are defined in [serverless.yml](serverless.yml).
 * Build pipelines are defined in [pipelines.gocd.yaml](pipelines.gocd.yaml).
 * VPC and NAT Gateway resources are defined in [aws-vpc.template](aws-vpc.template).
