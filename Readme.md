@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/C0k3/session.svg?branch=development)](https://travis-ci.org/C0k3/session)
+
 #/session: a Serverless API Example
 
 This is an example API built with the Serverless Framework and Go.cd pipeline support. This Session API example creates user accounts and short and long-lived sessions using JSON Web Tokens. Details can be found in the [API Reference](api-reference.md).
@@ -58,7 +59,7 @@ AWS Lambda supports resource isolation by hosting each Lambda function in its ow
 ####Development and deployment segregation
 Deployments occur on a per-function basis: a function supporting a particular API endpoint can be deployed independantly of functions supporting other API endpoints.
 
-The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is independently tested and deployed (while any shared code is tested across all Lambda functions). 
+The Continuous Integration/Continuous Delivery pipeline found in this example is designed to support the microservices pattern. Each Lambda function is independently tested and deployed (while any shared code is tested across all Lambda functions).
 
 ####CI/CD
 
