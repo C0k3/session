@@ -1,16 +1,16 @@
-#Session API Reference
+# Session API Reference
 All Requests must have Content-Type of "application/json"
 
-##POST /session
+## POST /session
 Create a refresh_token and access_token for a user session.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 
-####Request Parameters
+#### Request Parameters
 
 | Name  | Type | Description |
 | ------------- | ------------- | ------------- |
@@ -18,7 +18,7 @@ Create a refresh_token and access_token for a user session.
 | email | String | user's email address |
 | password | String | user's password |
 
-####Response Type
+#### Response Type
 ```
 Struct {
     access_token: string,
@@ -27,23 +27,23 @@ Struct {
 }
 ```
 
-##PUT /session
+## PUT /session
 Update an expired access_token.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 | Authorization | Value must be "Bearer {access_token}" - this must be the most recent access_token issued by the service. |
 
-####Request Parameters
+#### Request Parameters
 
 | Name  | Type | Description |
 | ------------- | ------------- | ------------- |
 | refresh_token | String | TA valid refresh token returned as a response to either a POST or PUT operation. |
 
-####Response Type
+#### Response Type
 ```
 Struct {
     access_token: string,
@@ -52,34 +52,34 @@ Struct {
 }
 ```
 
-##GET /session
+## GET /session
 Return the amount of time left before an access_token expires.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 | Authorization | Value must be "Bearer {access_token}" - this must be the most recent access_token issued by the service. |
 
-####Response Type
+#### Response Type
 ```
 Struct {
     access_token_expires_in: unsigned int32
 }
 ```
 
-##DELETE /session
+## DELETE /session
 End the session. All subsequent access token or refresh token usage from the completed session will return a 401 status. A new session must be created with a POST /session call.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 | Authorization | Value must be "Bearer {access_token}" - this must be the most recent access_token issued by the service. |
 
-##POST /user
+## POST /user
 Create a new user with a "traditional" account type.
 
 ####Request Headers
@@ -88,31 +88,31 @@ Create a new user with a "traditional" account type.
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 
-####Request Parameters
+#### Request Parameters
 
 | Name  | Type | Description |
 | ------------- | ------------- | ------------- |
 | email | String | user's email address |
 | password | String | user's password |
 
-####Response Type
+#### Response Type
 ```
 Struct {
     message: string
 }
 ```
 
-##GET /user
+## GET /user
 Return email and id for authenticated user.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
 | x-koms-clientid  | The client id for the client application  |
 | Authorization | Value must be "Bearer {access_token}" - this must be the most recent access_token issued by the service. |
 
-####Response Type
+#### Response Type
 ```
 Struct {
     id: string,
