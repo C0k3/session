@@ -82,7 +82,7 @@ End the session. All subsequent access token or refresh token usage from the com
 ## POST /user
 Create a new user with a "traditional" account type.
 
-####Request Headers
+#### Request Headers
 
 | Name  | Description |
 | ------------- | ------------- |
