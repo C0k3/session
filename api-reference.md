@@ -28,7 +28,7 @@ Struct {
 ```
 
 ## PUT /session
-Update an expired access_token.
+Refresh an expired access_token.
 
 #### Request Headers
 
@@ -41,7 +41,7 @@ Update an expired access_token.
 
 | Name  | Type | Description |
 | ------------- | ------------- | ------------- |
-| refresh_token | String | TA valid refresh token returned as a response to either a POST or PUT operation. |
+| refresh_token | String | A valid refresh token returned as a response to either a POST or PUT operation. |
 
 #### Response Type
 ```
